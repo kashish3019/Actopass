@@ -1,0 +1,225 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Layout */
+.row {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar (Fixed) */
+.sidebar {
+  width: 20%;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding-top: 20px;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Sidebar Links */
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #ecf0f1;
+  padding: 10px 15px;
+  display: block;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active-link {
+  background-color: #34495e;
+  color: #f1c40f;
+}
+
+/* Main Content */
+.content {
+  width: 80%;
+  margin-left: 20%; /* Sidebar ke width ke equal */
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 18px;
+  text-align: left;
+}
+th, td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+th {
+  background-color: #f4f4f4;
+  color: #26355D;
+  font-weight: bold;
+}
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+tr:hover {
+  background-color: #f1f1f1;
+}
+/* Form Container */
+form {
+  width: 60%;
+  margin: 40px auto;
+  background: #f4f4f4;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Headings */
+h1 {
+  text-align: center;
+  color: #26355D;
+  margin-bottom: 20px;
+}
+
+/* Labels */
+label {
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
+  color: #26355D;
+}
+
+/* Input Fields */
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Button Container */
+.pbtn {
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* Submit Button */
+button {
+  background: #26355D;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #1e2a4a;
+}
+/* Main Layout */
+.admin-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 20%;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding-top: 20px;
+  overflow-y: auto;
+}
+
+/* Content Section */
+.admin-content {
+  width: 80%;
+  margin-left: 20%;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.admin-content h1 {
+  text-align: center;
+  color: #26355D;
+  margin-bottom: 20px;
+}
+
+/* Product Grid */
+#product-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Product Card */
+.product-card {
+  background: #f4f4f4;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 220px;
+}
+
+/* Product Image */
+.product-img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+/* Product Title */
+.product-title {
+  font-family: sans-serif;
+  padding: 5px;
+  color: rgb(88, 85, 85);
+}
+
+/* Product Price */
+.product-price {
+  font-family: sans-serif;
+  padding: 5px;
+  color: rgba(88, 85, 85, 0.716);
+}
+
+/* Delete Button */
+.delete-btn {
+  display: block;
+  margin: 10px auto;
+  padding: 8px 12px;
+  border: none;
+  background: #e74c3c;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}

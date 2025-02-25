@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/css/adminNav.css">
+</head>
+<body>
+    <div class="Admin-main">
+        <div class="row">
+            <%- include('adminNav') %>
+
+            <!-- Main Content -->
+            <div class="w-80 content" id="mainContent">
+                <h3>Welcome to the Admin Panel</h3>
+                <p>Select a category from the sidebar to view its content.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional Script to Highlight Active Link -->
+    <script>
+        document.querySelectorAll('.sidebar ul li a').forEach(link => {
+            link.addEventListener('click', function () {
+                document.querySelectorAll('.sidebar ul li a').forEach(el => el.classList.remove('active-link'));
+                this.classList.add('active-link');
+            });
+        });
+    </script>
+</body>
+</html>

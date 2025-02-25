@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="/css/adminNav.css">
+</head>
+<body>
+   <div class="row">
+       <!-- Sidebar -->
+       <%- include('adminNav') %>
+
+       <!-- Main Content -->
+       <div class="content">
+           <h1 id="addproduct">Add Product</h1>
+           <form action="/product/productpage" method="post" id="pform">
+               <label>Image:</label><br>
+               <input type="url" name="img" id="img"><br>
+
+               <label>Title:</label><br>
+               <input type="text" name="title" id="title"><br>
+
+               <label>Price:</label><br>
+               <input type="number" name="price" id="price"><br>
+
+               <label>Description:</label><br>
+               <input type="text" name="desc" id="desc"><br>
+
+               <label>Category:</label><br>
+               <select name="category" id="category">
+                   <option value="allProduct">AllProduct</option>
+                   <option value="mobile">Mobiles</option>
+                   <option value="earbuds">Earbuds</option>
+                   <option value="smartwatch">Smartwatch</option>
+                   <option value="notebook">Notebook</option>
+                   <option value="camera">Camera</option>
+                   <option value="headphones">Headphones</option>
+                   <option value="other">Other</option>
+               </select><br>
+
+               <label>Size:</label><br>
+               <input type="text" name="size" id="size"><br>
+
+               <div class="pbtn">
+                   <button type="submit">Submit</button>
+               </div>
+           </form>
+       </div>
+   </div>
+</body>
+</html>
