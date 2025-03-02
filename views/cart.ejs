@@ -41,10 +41,7 @@
       }
        #box >div {
         display: flex;
-       }
-       /* button{
-        margin-left: 90px;
-       } */
+       }  
        .cart h1{
         margin-top: 20px;
         font-size: 30px;
@@ -95,83 +92,100 @@
   </body>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
-      const updateQty = (id, qty) => {
-    fetch(`/product/cart/update/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ qty })
-    })
+    const updateQty = (id, qty) => {
+        fetch(`/product/cart/update/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ qty })
+        })
         .then((res) => res.json())
-        .then((response) => get())
+        .then(() => get())
         .catch((err) => console.log(err))
-}
+    }
 
-const handlePayment = async (amount) => {
-    let res = await fetch("/product/payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: amount })
-    })
-    let order = await res.json()
-    console.log(order);
-    let options = {key: "rzp_test_7Grqtls4UrZJlU", amount: order.amount }
-    let razorpay = new Razorpay(options)
-    razorpay.open()
-}
-      const display = (data) => {
-        let totalprice=0
-      document.getElementById("box").innerHTML = "";
-      // document.getElementById("box1").innerHTML = "";
-      data.map((element) => {
-        let ele=element.productID
-        console.log(ele);
-        totalprice += ele.price * element.qty
-        let img = document.createElement("img");
-        img.src = ele.img;
-        img.style.width = "150px";
-        img.style.height = "150px";
-        let title = document.createElement("h2");
-        title.innerHTML = ele.title;
-        let price = document.createElement("h3");
-        price.innerHTML = `₹${ele.price}`;
-        let btn2 = document.createElement("button");
-        btn2.innerHTML = "+";
-        btn2.setAttribute("class", "cartbtn2");
-        btn2.addEventListener("click", () => updateQty(element._id, +1));
-        let btn1 = document.createElement("button");
-        btn1.innerHTML = "-";
-        btn1.setAttribute("class", "cartbtn1");
-        btn1.addEventListener("click", () => updateQty(element._id, -1));
-        let qty = document.createElement("button");
-        qty.innerHTML = `QTY ${element.qty}`;
-        qty.setAttribute("class", "cartqty");
-        let div = document.createElement("div");
-        div.append(img);
-      document.getElementById("box").append(div);
-      let div2 = document.createElement("div");
-        div2.append(title, price);
-        document.getElementById("box").append(div2);
-        let div4 = document.createElement("div");
-        div4.append(btn2,qty,btn1);
-        document.getElementById("box").append(div4);
-        let div3 = document.createElement("div");
-        div3.append(div,div2,div4);
-        document.getElementById("box").append(div3);
-      });
+    const handlePayment = async (amount) => {
+        let res = await fetch("/product/payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount: amount })
+        })
+        let order = await res.json()
+        console.log(order);
+        let options = { key: "rzp_test_7Grqtls4UrZJlU", amount: order.amount }
+        let razorpay = new Razorpay(options)
+        razorpay.open()
+    }
 
-      let priceBtn = document.createElement("button")
-    priceBtn.innerHTML = `Total Price: ₹ ${totalprice}`
-    document.getElementById("box").append(priceBtn)
-    priceBtn.setAttribute("class", "pricebtn");
-    priceBtn.addEventListener("click", () => handlePayment(totalprice))
+    const display = (data) => {
+        let totalprice = 0;
+        document.getElementById("box").innerHTML = "";
+
+        data.forEach((element) => {
+            let ele = element.productID;
+            console.log(ele);
+
+            totalprice += element.price * element.qty; // Use element.price (from selected ticket)
+
+            // Create product image
+            let img = document.createElement("img");
+            img.src = ele.img;
+            img.style.width = "150px";
+            img.style.height = "150px";
+
+            // Create product title
+            let title = document.createElement("h2");
+            title.innerHTML = ele.title;
+
+            // Display ticket type
+            let ticketType = document.createElement("h3");
+            ticketType.innerHTML = `<strong>Ticket Type:</strong> ${element.ticketType}`;
+
+            // Display ticket price
+            let price = document.createElement("h3");
+            price.innerHTML = `<strong>Price:</strong> ₹${element.price}`;
+
+            // Quantity buttons
+            let btn2 = document.createElement("button");
+            btn2.innerHTML = "+";
+            btn2.setAttribute("class", "cartbtn2");
+            btn2.addEventListener("click", () => updateQty(element._id, +1));
+
+            let btn1 = document.createElement("button");
+            btn1.innerHTML = "-";
+            btn1.setAttribute("class", "cartbtn1");
+            btn1.addEventListener("click", () => updateQty(element._id, -1));
+
+            let qty = document.createElement("button");
+            qty.innerHTML = `QTY ${element.qty}`;
+            qty.setAttribute("class", "cartqty");
+
+            // Create a div for the cart item
+            let div = document.createElement("div");
+            div.append(img);
+            let div2 = document.createElement("div");
+            div2.append(title, ticketType, price);
+            let div3 = document.createElement("div");
+            div3.append(btn2, qty, btn1);
+            let div4 = document.createElement("div");
+            div4.append(div, div2, div3);
+            document.getElementById("box").append(div4);
+        });
+
+        let priceBtn = document.createElement("button")
+        priceBtn.innerHTML = `Total Price: ₹ ${totalprice}`;
+        document.getElementById("box").append(priceBtn);
+        priceBtn.setAttribute("class", "pricebtn");
+        priceBtn.addEventListener("click", () => handlePayment(totalprice));
     };
 
-    const get=async () => {
-    fetch("/product/cartfind")
-        .then((response) => response.json())
-        .then((response) => display(response))
-        .catch((error) => console.log(error));
-}
-get()
-  </script>
+    const get = async () => {
+        fetch("/product/cartfind")
+            .then((response) => response.json())
+            .then((response) => display(response))
+            .catch((error) => console.log(error));
+    }
+    
+    get();
+</script>
+
 </html>

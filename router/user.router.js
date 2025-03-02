@@ -23,8 +23,8 @@ router.get("/resetpass",resetpass)
 
 // show user when logged website
 
-router.get("/userlist",listuser)
-router.delete("/deleteuser/:id", deleteUser );
+router.get("/userlist",isAdmin,listuser)
+router.delete("/deleteuser/:id",isAdmin,deleteUser );
 
 
 // New route for admin panel

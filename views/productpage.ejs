@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Page</title>
+    <title>Event Page</title>
     <link rel="stylesheet" href="/css/adminNav.css">
 </head>
 <body>
@@ -13,34 +13,45 @@
 
        <!-- Main Content -->
        <div class="content">
-           <h1 id="addproduct">Add Product</h1>
-           <form action="/product/productpage" method="post" id="pform">
-               <label>Image:</label><br>
-               <input type="url" name="img" id="img"><br>
+           <h1 id="addEvent">Add Event</h1>
+           <form action="/product/productpage" method="post" id="eventForm">
+               <label>Image URL:</label><br>
+               <input type="url" name="img" id="img" required><br>
 
-               <label>Title:</label><br>
-               <input type="text" name="title" id="title"><br>
-
-               <label>Price:</label><br>
-               <input type="number" name="price" id="price"><br>
+               <label>Event Name:</label><br>
+               <input type="text" name="title" id="title" required><br>
 
                <label>Description:</label><br>
-               <input type="text" name="desc" id="desc"><br>
+               <textarea name="desc" id="desc" required></textarea><br>
+
+               <label>Event Date:</label><br>
+               <input type="date" name="date" id="date" required><br>
+
+               <label>Event Time:</label><br>
+               <input type="time" name="time" id="time" required><br>
 
                <label>Category:</label><br>
-               <select name="category" id="category">
-                   <option value="allProduct">AllProduct</option>
-                   <option value="mobile">Mobiles</option>
-                   <option value="earbuds">Earbuds</option>
-                   <option value="smartwatch">Smartwatch</option>
-                   <option value="notebook">Notebook</option>
-                   <option value="camera">Camera</option>
-                   <option value="headphones">Headphones</option>
-                   <option value="other">Other</option>
+               <select name="category" id="category" required>
+                   <option value="concert">Concert</option>
+                   <option value="conference">Conference</option>
+                   <option value="sports">Sports</option>
+                   <option value="theater">Theater</option>
+                   <option value="festival">Festival</option>
                </select><br>
 
-               <label>Size:</label><br>
-               <input type="text" name="size" id="size"><br>
+               <h3>Ticket Types</h3>
+               <div id="ticketsContainer">
+                   <div class="ticketRow">
+                       <input type="text" name="ticketType[]" placeholder="Ticket Type (e.g., VIP)" required>
+                       <input type="number" name="ticketPrice[]" placeholder="Price (₹)" required>
+                       <button type="button" onclick="removeTicket(this)">❌</button>
+                   </div>
+               </div>
+               
+               <button type="button" onclick="addTicket()">➕ Add Ticket</button>
+
+               <label>Available Tickets:</label><br>
+               <input type="number" name="stock" id="stock" required><br>
 
                <div class="pbtn">
                    <button type="submit">Submit</button>
@@ -48,5 +59,68 @@
            </form>
        </div>
    </div>
+
+   <script>
+       function addTicket() {
+           const container = document.getElementById("ticketsContainer");
+           const div = document.createElement("div");
+           div.classList.add("ticketRow");
+           div.innerHTML = `
+               <input type="text" name="ticketType[]" placeholder="Ticket Type (e.g., VIP)" required>
+               <input type="number" name="ticketPrice[]" placeholder="Price (₹)" required>
+               <button type="button" onclick="removeTicket(this)">❌</button>
+           `;
+           container.appendChild(div);
+       }
+
+       function removeTicket(button) {
+           button.parentElement.remove();
+       }
+
+       document.getElementById("eventForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const ticketTypes = formData.getAll("ticketType[]");
+    const ticketPrices = formData.getAll("ticketPrice[]");
+
+    const tickets = ticketTypes.map((type, index) => ({
+        type,
+        price: Number(ticketPrices[index])
+    }));
+
+    const eventData = {
+        title: formData.get("title"),
+        img: formData.get("img"),
+        desc: formData.get("desc"),
+        date: formData.get("date"),
+        time: formData.get("time"),
+        tickets,
+        category: formData.get("category"),
+        stock: Number(formData.get("stock"))
+    };
+
+    try {
+        const response = await fetch("/product/productpage", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(eventData)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert(result.message);
+            event.target.reset(); // Clear form
+        } else {
+            alert(`Error: ${result.message}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Something went wrong. Please try again.");
+    }
+});
+
+   </script>
 </body>
 </html>

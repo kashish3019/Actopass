@@ -3,6 +3,7 @@ const cart=require("../models/cart.schema")
 const Razorpay = require("razorpay")
 const Fuse=require("fuse.js")
 const user = require("../models/user.schema")
+
 const create=async(req,res)=>{
     try{
         let data=await product.find()
@@ -12,12 +13,39 @@ const create=async(req,res)=>{
         res.status(404).send(error.message)
     }
 }
-const createBy=async(req,res)=>{
-    
-    req.body.createBy=req.user.id
-    let data =await product.create(req.body)
-    res.send(data)
-}
+const createBy = async (req, res) => {
+    try {
+        if (!req.body || Object.keys(req.body).length === 0) {
+            return res.status(400).json({ message: "No data received!" });
+        }
+
+        req.body.createBy = req.user.id;
+        const { title, img, desc, date, time, tickets, category, stock } = req.body;
+
+        if (!title || !img || !desc || !date || !time || !tickets || tickets.length === 0 || !category || !stock) {
+            return res.status(400).json({ message: "All fields are required!" });
+        }
+
+        const newEvent = new product({
+            title,
+            img,
+            desc,
+            date,
+            time,
+            tickets,
+            category,
+            stock,
+            createBy: req.user.id
+        });
+
+        await newEvent.save();
+        res.status(201).json({ message: "Event created successfully", event: newEvent });
+
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
 
 // admin
 
@@ -43,22 +71,48 @@ const home=async(req,res)=>{
 
 // cart
 // Adds a product to the cart.
-const carts=async(req,res)=>{
-    let userID=req.user.id;
-    req.body.userID=userID;
-    
-    let data=await cart.create(req.body)
-    console.log(data);
-    res.send(data)
- 
-}
+const carts = async (req, res) => {
+    let userID = req.user.id;
+    req.body.userID = userID;
+
+    console.log("Incoming cart data:", req.body); // Debugging: Log incoming data
+
+    // Fetch the selected product
+    let productData = await product.findById(req.body.productID);
+    if (!productData) {
+        return res.status(404).send("Product not found");
+    }
+
+    let { ticketType, price } = req.body; // Get ticket type and price from request
+
+    if (!ticketType || !price) {
+        return res.status(400).send("Ticket type and price are required"); // Ensure data is sent
+    }
+
+    let cartItem = await cart.create({
+        userID: userID,
+        productID: req.body.productID,
+        ticketType: ticketType, // Store selected ticket type
+        price: price, // Store ticket price
+        qty: 1 // Default quantity
+    });
+
+    console.log("Cart Item Added:", cartItem); // Debugging: Log stored cart item
+
+    res.send(cartItem);
+};
+
 // Retrieves and displays the user’s cart items.
-const cartfind=async(req,res)=>{
-    console.log(req.user);
-    let data=await cart.find({userID:req.user.id}).populate("productID")
-    res.send(data)
-    console.log(data,"cart");
-}
+const cartfind = async (req, res) => {
+    console.log("Fetching cart for user:", req.user.id); // Debugging
+
+    let data = await cart.find({ userID: req.user.id }).populate("productID");
+    
+    console.log("Cart Data:", data); // Debugging: Log fetched cart items
+
+    res.send(data);
+};
+
 // Renders the cart page using a template engine
 const getcart=async(req,res)=>{
     res.render("cart")
@@ -135,13 +189,30 @@ const payment = (req, res) => {
 }
 
 // singlepage
-
 const singlepage = async (req, res) => {
-    const { id } = req.params;
-      let singlepage = await product.findById(id);
-      res.render("singlepage", { singlepage });
-  };
-  const search = async(req,res)=>{
+    try {
+        const { id } = req.params;
+        let productData = await product.findById(id);
+
+        if (!productData) {
+            return res.status(404).send("Product not found");
+        }
+
+        console.log("Fetched Product Data:", productData); // Debugging
+
+        // Ensure tickets exist and are an array
+        if (!Array.isArray(productData.tickets)) {
+            productData.tickets = [];
+        }
+
+        res.render("singlepage", { singlepage: productData });
+    } catch (error) {
+        console.error("Error fetching product:", error);
+        res.status(500).send("Server Error");
+    }
+};
+
+const search = async(req,res)=>{
    
         const {query} = req.query;
 
@@ -174,51 +245,49 @@ const deleteProduct = async (req, res) => {
 
   const productUpdate = async (req, res) => {
     try {
-      const { title,desc,price,size,category ,_id } = req.body;
-  
-      const products = await product.findById(_id);
-  
-      const existingProduct= await product.findOne({
-        title,
-        _id: { $ne: products }
-      });
-      let updatedDetails = {
-        title,
-        desc,
-        price,
-        size,
-        category,
-      };
-  
-    //   if (req.file) {
-    //     if (accountType.icon) {
-    //       const oldFilePath = path.join(__dirname, "images", accountType.icon);
-    //       if (fs.existsSync(oldFilePath)) {
-    //         fs.unlinkSync(oldFilePath);
-    //       }
-    //     }
-    //     updatedDetails.icon = req.file.filename;
-    //   }
-      const datas=await product.findByIdAndUpdate(_id, updatedDetails, { new: true });
-      console.log(datas);
-      
-      return res.status(200).json({
-        status: true,
-        code:200,
-        message:"done",
-        data: datas,
-      });
-    //   return res.redirect("/product/shop")
+        const { _id, title, desc, date, time, category, stock, ticketType, ticketPrice, img } = req.body;
+
+        const tickets = ticketType.map((type, index) => ({
+            type,
+            price: Number(ticketPrice[index]),
+        }));
+
+        let updatedDetails = {
+            title,
+            desc,
+            date,
+            time,
+            category,
+            stock: Number(stock),
+            tickets,
+            img
+        };
+
+        const updatedProduct = await product.findByIdAndUpdate(_id, updatedDetails, { new: true });
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        return res.redirect("/product/getuser"); // Redirect to the admin product list
     } catch (error) {
-      console.log(error);
-      return res.status(400).json({
-        status: false,
-        code:400,
-        message: error.message,
-        data: {},
-      });
+        console.log(error);
+        return res.status(500).json({ message: "Error updating product", error });
     }
-  };
+};
 
 
-module.exports={home,create,createBy,productpage,getuser,admin,shop,carts,cartfind,getcart,updatecart,payment,allproduct,pricefilter,filltercategory,singlepage,search,deleteProduct,productUpdate}
+  const editProductPage = async (req, res) => {
+    try {
+        const { id } = req.params;
+        let productData = await product.findById(id);
+        if (!productData) {
+            return res.status(404).send("Product not found");
+        }
+        res.render("editProduct", { product: productData });
+    } catch (error) {
+        res.status(500).send("Error loading product details");
+    }
+};
+
+module.exports={home,create,createBy,productpage,getuser,admin,shop,carts,cartfind,getcart,updatecart,payment,allproduct,pricefilter,filltercategory,singlepage,search,deleteProduct,productUpdate,editProductPage}

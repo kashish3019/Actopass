@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link rel="stylesheet" href="/css/adminNav.css">
+    <link rel="stylesheet" href="/css/editProduct.css">
+</head>
+<body>
+    <div class="admin-container">
+        <%- include('adminNav') %>
+
+        <div class="admin-content">
+            <h1>Edit Event</h1>
+            <form action="/product/productupdate" method="post">
+                <input type="hidden" name="_id" value="<%= product._id %>">
+
+                <label>Image URL:</label>
+                <input type="url" name="img" value="<%= product.img %>" required>
+
+                <label>Event Name:</label>
+                <input type="text" name="title" value="<%= product.title %>" required>
+
+                <label>Description:</label>
+                <textarea name="desc" required><%= product.desc %></textarea>
+
+                <label>Event Date:</label>
+                <input type="date" name="date" value="<%= product.date %>" required>
+
+                <label>Event Time:</label>
+                <input type="time" name="time" value="<%= product.time %>" required>
+
+                <label>Category:</label>
+                <select name="category" required>
+                    <option value="concert" <%= product.category === "concert" ? "selected" : "" %>>Concert</option>
+                    <option value="conference" <%= product.category === "conference" ? "selected" : "" %>>Conference</option>
+                    <option value="sports" <%= product.category === "sports" ? "selected" : "" %>>Sports</option>
+                    <option value="theater" <%= product.category === "theater" ? "selected" : "" %>>Theater</option>
+                    <option value="festival" <%= product.category === "festival" ? "selected" : "" %>>Festival</option>
+                </select>
+
+                <h3>Ticket Types</h3>
+                <div id="ticketsContainer">
+                    <% product.tickets.forEach((ticket, index) => { %>
+                        <div class="ticketRow">
+                            <input type="text" name="ticketType[]" value="<%= ticket.type %>" required>
+                            <input type="number" name="ticketPrice[]" value="<%= ticket.price %>" required>
+                        </div>
+                    <% }); %>
+                </div>
+                <button type="button" onclick="addTicket()">➕ Add Ticket</button>
+
+                <label>Available Tickets:</label>
+                <input type="number" name="stock" value="<%= product.stock %>" required>
+
+                <button type="submit">Update Product</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function addTicket() {
+            const container = document.getElementById("ticketsContainer");
+            const div = document.createElement("div");
+            div.classList.add("ticketRow");
+            div.innerHTML = `
+                <input type="text" name="ticketType[]" placeholder="Ticket Type (e.g., VIP)" required>
+                <input type="number" name="ticketPrice[]" placeholder="Price (₹)" required>
+                <button type="button" onclick="this.parentElement.remove()">❌</button>
+            `;
+            container.appendChild(div);
+        }
+    </script>
+</body>
+</html>

@@ -12,13 +12,13 @@
 <body>
   <div class="admin-container">
     <%- include('adminNav') %>
-    
+
     <div class="admin-content">
       <h1>Your Products:</h1>
       <div id="product-box"></div>
     </div>
   </div>
-  
+
   <%- include('footer') %>
 </body>
 
@@ -36,8 +36,15 @@
 
       let price = document.createElement("h4");
       price.className = "product-price";
-      price.innerHTML = `$ ${ele.price}`;
+      // price.innerHTML = `$ ${ele.price}`; 
 
+      // Edit Button
+      let editBtn = document.createElement("button");
+      editBtn.className = "edit-btn";
+      editBtn.innerHTML = "Edit";
+      editBtn.onclick = () => window.location.href = `/product/edit/${ele._id}`;
+
+      //DELETE BUTTON 
       let deleteBtn = document.createElement("button");
       deleteBtn.className = "delete-btn";
       deleteBtn.innerHTML = "Delete";
@@ -45,7 +52,7 @@
 
       let div = document.createElement("div");
       div.className = "product-card";
-      div.append(img, title, price, deleteBtn);
+      div.append(img, title, price, editBtn, deleteBtn);
       document.getElementById("product-box").append(div);
     });
   };
