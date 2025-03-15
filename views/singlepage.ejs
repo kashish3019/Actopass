@@ -9,20 +9,26 @@
 <body>
   <%- include('nav') %>
 
+ <div class="container">
+   <!-- Event Banner Image -->
+   <div class="event-banner">
+    <img src="<%= singlepage.img %>" alt="<%= singlepage.title %>" />
+  </div>
+
+  <!-- Event Content Section -->
   <div class="container">
-    <div class="single-product">
+    <div class="event-content">
       
-      <!-- Left: Product Image -->
-      <div class="product-image">
-        <img src="<%= singlepage.img %>" alt="<%= singlepage.title %>" />
+      <!-- Left Side: Title & Description -->
+      <div class="event-left">
+        <h1 class="event-title"><%= singlepage.title %></h1>
+        <p class="event-description"><%= singlepage.desc %></p>
       </div>
 
-      <!-- Right: Product Details -->
-      <div class="product-details">
-        <h1><%= singlepage.title %></h1>
-        <p><strong>Description:</strong> <%= singlepage.desc %></p>
-        <p><strong>Date:</strong> <%= singlepage.date %></p>
-        <p><strong>Time:</strong> <%= singlepage.time %></p>
+      <!-- Right Side: Event Details -->
+      <div class="event-right">
+        <p><strong>Event Date:</strong> <%= singlepage.date %></p>
+        <p><strong>Event Time:</strong> <%= singlepage.time %></p>
 
         <!-- Ticket Type Selection -->
         <label for="ticketType"><strong>Ticket Type:</strong></label>
@@ -38,18 +44,20 @@
           <% } %>
         </select>
 
-<!-- Ticket Price -->
-<p><strong>Price: ₹</strong> 
-  <span id="ticketPrice">
-    <%= (singlepage.tickets && singlepage.tickets.length > 0) ? singlepage.tickets[0].price : "N/A" %>
-  </span>
-</p>
+        <!-- Ticket Price -->
+        <p><strong>Price: ₹</strong> 
+          <span id="ticketPrice">
+            <%= (singlepage.tickets && singlepage.tickets.length > 0) ? singlepage.tickets[0].price : "N/A" %>
+          </span>
+        </p>
 
         <!-- Add to Cart Button -->
-        <button id="addToCart">Add to Cart</button>
+        <button id="addToCart" class="btn-add-cart">Add to Cart</button>
       </div>
+
     </div>
   </div>
+ </div>
 
 </body>
 
@@ -76,5 +84,4 @@
     .catch((error) => console.error("Error:", error));
   });
 </script>
-
 </html>

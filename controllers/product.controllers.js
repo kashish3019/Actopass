@@ -118,17 +118,26 @@ const getcart=async(req,res)=>{
     res.render("cart")
 }
 // Updates the quantity of a cart item or removes it if the quantity reaches 0.
-const updatecart=async(req,res)=>{
-    let {qty}=req.body
-    let {id}=req.params
-     let data=await cart.findById(id)
-     data.qty=data.qty+qty
-     await data.save()
-     if(data.qty==0){ 
-        await cart.findByIdAndDelete(id)
-     }
-     res.send({update:data})
-}
+const updatecart = async (req, res) => {
+    let { qty } = req.body; // This is the change (+1 or -1)
+    let { id } = req.params;
+
+    let data = await cart.findById(id);
+    if (!data) {
+        return res.status(404).json({ success: false, message: "Cart item not found" });
+    }
+
+    data.qty += qty; // ✅ Correctly updating the quantity
+
+    if (data.qty <= 0) {
+        await cart.findByIdAndDelete(id);
+        return res.json({ success: true, message: "Item removed from cart" });
+    }
+
+    await data.save();
+    res.json({ success: true, updated: data });
+};
+
 
 const allproduct = async(req,res) =>{
     try {
