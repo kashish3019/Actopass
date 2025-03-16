@@ -9,7 +9,9 @@
   margin: auto;
 }
 
-
+.pr-5{
+  padding-right: 5px;
+}
 ul,
 li {
   list-style: none;
@@ -36,7 +38,9 @@ ul li a {
 .justify-between {
   justify-content: space-around;
 }
-
+.justify-center{
+  justify-content: center;
+}
 html {
   scroll-behavior: smooth;
 }
@@ -46,7 +50,37 @@ html {
 }
 
 .header-image img {
-  width: 30%;
+  width: 50%;
+}
+.header-nav{
+  padding-top: 10px;
+}
+.header-nav ul li a {
+  position: relative;
+  color: black;
+  text-decoration: none;
+  padding-bottom: 5px;
+  transition: color 0.3s ease;
+}
+
+.header-nav ul li a:hover {
+  color: #8e2fd1;
+}
+
+.header-nav ul li a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 1px;
+  background: #8e2fd1;
+  left: 100%;
+  bottom: 0;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.header-nav ul li a:hover::after {
+  width: 100%;
+  left: 0;
 }
 
 .row {
@@ -60,7 +94,6 @@ html {
 }
 
 #pform {
-  /* width: 500px;  */
   padding: 50px;
   width: 600px;
   margin: auto;
