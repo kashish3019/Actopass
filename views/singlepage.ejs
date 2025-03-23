@@ -1,87 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= singlepage.title %></title>
+  <title>
+    <%= singlepage.title %>
+  </title>
   <link rel="stylesheet" href="/css/index.css" />
 </head>
+
 <body>
   <%- include('nav') %>
 
- <div class="container">
-   <!-- Event Banner Image -->
-   <div class="event-banner">
-    <img src="<%= singlepage.img %>" alt="<%= singlepage.title %>" />
-  </div>
-
-  <!-- Event Content Section -->
-  <div class="container">
-    <div class="event-content">
-      
-      <!-- Left Side: Title & Description -->
-      <div class="event-left">
-        <h1 class="event-title"><%= singlepage.title %></h1>
-        <p class="event-description"><%= singlepage.desc %></p>
+    <div class="container padding-b-100">
+      <!-- Event Banner Image -->
+      <div class="event-banner">
+        <img src="<%= singlepage.img %>" alt="<%= singlepage.title %>">
       </div>
 
-      <!-- Right Side: Event Details -->
-      <div class="event-right">
-        <p><strong>Event Date:</strong> <%= singlepage.date %></p>
-        <p><strong>Event Time:</strong> <%= singlepage.time %></p>
+      <!-- Event Content Section -->
+      <div class="event-content">
 
-        <!-- Ticket Type Selection -->
-        <label for="ticketType"><strong>Ticket Type:</strong></label>
-        <select id="ticketType" onchange="updatePrice()">
-          <% if (singlepage.tickets && Array.isArray(singlepage.tickets) && singlepage.tickets.length > 0) { %>
-            <% singlepage.tickets.forEach((ticket, index) => { %>
-              <option value="<%= ticket.price %>" <%= index === 0 ? 'selected' : '' %>>
-                <%= ticket.type %> - ₹<%= ticket.price %>
-              </option>
-            <% }); %>
-          <% } else { %>
-            <option disabled>No tickets available</option>
-          <% } %>
-        </select>
+        <!-- Left Side: Title & Description -->
+        <div class="event-left">
+          <h1 class="event-title">
+            <%= singlepage.title %>
+          </h1>
+          <p class="event-description">
+            <%= singlepage.desc %>
+          </p>
+        </div>
 
-        <!-- Ticket Price -->
-        <p><strong>Price: ₹</strong> 
-          <span id="ticketPrice">
-            <%= (singlepage.tickets && singlepage.tickets.length > 0) ? singlepage.tickets[0].price : "N/A" %>
-          </span>
-        </p>
+        <!-- Right Side: Event Details -->
+        <div class="event-right">
+          <p><strong>Event Date:</strong></p>
+          <div class="event-box" id="eventDate">
+            <%= singlepage.date %>
+          </div>
 
-        <!-- Add to Cart Button -->
-        <button id="addToCart" class="btn-add-cart">Add to Cart</button>
+          <p><strong>Event Time:</strong></p>
+          <div class="event-box">
+            <%= singlepage.time %>
+          </div>
+
+          <!-- Ticket Type Selection -->
+          <p><strong>Ticket Type:</strong> <span id="selectedTicket">
+              <% if (singlepage.tickets && singlepage.tickets.length > 0) { %>
+                <%= singlepage.tickets[0].type %> <!-- Default ticket -->
+                  <% } else { %>
+                    None
+                    <% } %>
+            </span></p>
+
+          <!-- Ticket Price -->
+          <p><strong>Price:</strong> ₹<span id="selectedPrice">
+              <% if (singlepage.tickets && singlepage.tickets.length > 0) { %>
+                <%= singlepage.tickets[0].price %> <!-- Default price -->
+                  <% } else { %>
+                    0
+                    <% } %>
+            </span></p>
+
+          <div class="ticket-types">
+            <% if (singlepage.tickets && Array.isArray(singlepage.tickets) && singlepage.tickets.length > 0) { %>
+              <% singlepage.tickets.forEach((ticket, index) => { %>
+                <div class="event-box ticket-option 
+                <% if (index === 0) { %> selected-ticket <% } %>"
+                  onclick="selectTicket(this, '<%= ticket.type %>', '<%= ticket.price %>')">
+                  <%= ticket.type %> <!-- Removed price from here -->
+                </div>
+                <% }); %>
+                  <% } else { %>
+                    <div class="event-box">No tickets available</div>
+                    <% } %>
+          </div>
+
+          <!-- Buy It Now Button -->
+          <button id="addToCart" class="btn-add-cart">Add to Cart</button>
+        </div>
+
       </div>
-
     </div>
-  </div>
- </div>
 
 </body>
-
 <script>
-  // Update price when ticket type is selected
-  function updatePrice() {
-    let price = document.getElementById("ticketType").value;
-    document.getElementById("ticketPrice").innerText = price;
+  function selectTicket(element, type, price) {
+    document.querySelectorAll(".ticket-option").forEach(ticket => {
+      ticket.classList.remove("selected-ticket");
+    });
+
+    element.classList.add("selected-ticket");
+    document.getElementById("selectedTicket").innerText = type;
+    document.getElementById("selectedPrice").innerText = price;
+
+    console.log("Selected ticket updated:", type, price);
   }
 
-  // Handle Add to Cart
+  // event date format 
+  document.addEventListener("DOMContentLoaded", function () {
+    const dateElement = document.getElementById("eventDate");
+    const dateStr = dateElement.innerText; // Get the date string
+    const date = new Date(dateStr); // Convert to Date object
+
+    // Format the date
+    const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = date.toLocaleDateString('en-US', options);
+
+    dateElement.innerText = formattedDate;
+  });
+
   document.getElementById("addToCart").addEventListener("click", () => {
     let id = "<%= singlepage.id %>";
-    let ticketType = document.getElementById("ticketType").options[document.getElementById("ticketType").selectedIndex].text;
-    let price = document.getElementById("ticketType").value;
+    let ticketType = document.getElementById("selectedTicket").innerText; // Get selected ticket type
+    let price = parseFloat(document.getElementById("selectedPrice").innerText); // Convert price to a number
 
     fetch("/product/cart", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productID: id, ticketType: ticketType, price: price }),
+      body: JSON.stringify({ productID: id, ticketType: ticketType, price: price }), // Send only necessary data
     })
-    .then((response) => response.json())
-    .then(() => alert("Ticket added successfully!"))
-    .catch((error) => console.error("Error:", error));
+      .then((response) => response.json())
+      .then(() => alert("Ticket added successfully!"))
+      .catch((error) => console.error("Error:", error));
   });
+
 </script>
+
 </html>

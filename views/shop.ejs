@@ -103,7 +103,6 @@
           </div>
         </div>
         <div class="content-div row">
-          
           <div id="box"></div>
         </div>
       </div>
@@ -121,33 +120,37 @@
     console.log(data);
     document.getElementById("box").innerHTML = "";
     data.map((ele) => {
-      if (ele.item) {
-        ele = ele.item;
-      }
+        if (ele.item) {
+            ele = ele.item;
+        }
 
-      let img = document.createElement("img");
-      img.src = ele.img;
-      img.classList.add("explore-img"); // Applying the new CSS class for images
+        let img = document.createElement("img");
+        img.src = ele.img;
+        img.classList.add("explore-img");
 
-      let title = document.createElement("h2");
-      title.innerHTML = ele.title;
+        let title = document.createElement("h2");
+        title.innerHTML = ele.title;
 
-      let titleDiv = document.createElement("div");
-      titleDiv.classList.add("explore-title"); // Applying the new CSS class for title div
-      titleDiv.append(title);
+        let titleDiv = document.createElement("div");
+        titleDiv.classList.add("explore-title");
+        titleDiv.append(title);
 
-      let imgDiv = document.createElement("div");
-      imgDiv.append(img);
-      imgDiv.addEventListener("click", () => {
-        window.location.href = `/product/singlepage/${ele._id}`;
-      });
+        let imgDiv = document.createElement("div");
+        imgDiv.append(img);
 
-      let mainDiv = document.createElement("div");
-      mainDiv.classList.add("event-main-div")
-      mainDiv.append(imgDiv, titleDiv);
-      document.getElementById("box").append(mainDiv);
+        let mainDiv = document.createElement("div");
+        mainDiv.classList.add("event-main-div");
+        mainDiv.append(imgDiv, titleDiv);
+
+        // 🛠️ Add click event to the whole div
+        mainDiv.addEventListener("click", () => {
+            window.location.href = `/product/singlepage/${ele._id}`;
+        });
+
+        document.getElementById("box").append(mainDiv);
     });
-  };
+};
+
 
   const allproducts = () => {
     fetch(`/product/allproduct`)
