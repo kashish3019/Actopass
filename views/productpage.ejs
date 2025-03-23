@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Page</title>
     <link rel="stylesheet" href="/css/adminNav.css">
+    <link rel="stylesheet" href="/all.min.css">
 </head>
 <body>
    <div class="row">
@@ -13,7 +14,7 @@
 
        <!-- Main Content -->
        <div class="content">
-           <h1 id="addEvent">Add Event</h1>
+           <h1 id="addEvent" class="text-white">Add Event</h1>
            <form action="/product/productpage" method="post" id="eventForm">
                <label>Image URL:</label><br>
                <input type="url" name="img" id="img" required><br>
@@ -39,12 +40,12 @@
                    <option value="festival">Festival</option>
                </select><br>
 
-               <h3>Ticket Types</h3>
+               <label>Ticket Types</label><br>
                <div id="ticketsContainer">
                    <div class="ticketRow">
                        <input type="text" name="ticketType[]" placeholder="Ticket Type (e.g., VIP)" required>
-                       <input type="number" name="ticketPrice[]" placeholder="Price (₹)" required>
-                       <button type="button" onclick="removeTicket(this)">❌</button>
+                       <input type="number" class="input-margin-top" name="ticketPrice[]" placeholder="Price (₹)" required>
+                       <button type="button" class="cross-button"onclick="removeTicket(this)">❌ Remove</button>
                    </div>
                </div>
                
@@ -61,21 +62,35 @@
    </div>
 
    <script>
-       function addTicket() {
-           const container = document.getElementById("ticketsContainer");
-           const div = document.createElement("div");
-           div.classList.add("ticketRow");
-           div.innerHTML = `
-               <input type="text" name="ticketType[]" placeholder="Ticket Type (e.g., VIP)" required>
-               <input type="number" name="ticketPrice[]" placeholder="Price (₹)" required>
-               <button type="button" onclick="removeTicket(this)">❌</button>
-           `;
-           container.appendChild(div);
-       }
+    function addTicket() {
+    const container = document.getElementById("ticketsContainer");
+    const ticketCount = container.children.length + 1; // Counting existing tickets
 
-       function removeTicket(button) {
-           button.parentElement.remove();
-       }
+    const div = document.createElement("div");
+    div.classList.add("ticketRow");
+
+    div.innerHTML = `
+        <label>Ticket Type: ${ticketCount}</label> <br>
+        <input type="text" name="ticketType[]" placeholder="Ticket Type (e.g., VIP)" required>
+        <input type="number" class="input-margin-top" name="ticketPrice[]" placeholder="Price (₹)" required>
+        <button type="button" class="cross-button" onclick="removeTicket(this)">❌</button>
+    `;
+
+    container.appendChild(div);
+}
+
+function removeTicket(button) {
+    button.parentElement.remove();
+    updateTicketLabels(); // Updating labels after removing a ticket
+}
+
+function updateTicketLabels() {
+    const tickets = document.querySelectorAll(".ticketRow label");
+    tickets.forEach((label, index) => {
+        label.innerText = `Ticket Type: ${index + 1}`;
+    });
+}
+
 
        document.getElementById("eventForm").addEventListener("submit", async function(event) {
     event.preventDefault();

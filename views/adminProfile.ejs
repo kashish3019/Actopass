@@ -12,21 +12,11 @@
             <%- include('adminNav') %>
 
             <!-- Main Content -->
-            <div class="w-80 content" id="mainContent">
+            <div class="w-80 content admin-wel" id="mainContent">
                 <h3>Welcome to the Admin Panel</h3>
                 <p>Select a category from the sidebar to view its content.</p>
             </div>
         </div>
     </div>
-
-    <!-- Optional Script to Highlight Active Link -->
-    <script>
-        document.querySelectorAll('.sidebar ul li a').forEach(link => {
-            link.addEventListener('click', function () {
-                document.querySelectorAll('.sidebar ul li a').forEach(el => el.classList.remove('active-link'));
-                this.classList.add('active-link');
-            });
-        });
-    </script>
 </body>
 </html>

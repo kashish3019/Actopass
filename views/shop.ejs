@@ -17,7 +17,6 @@
       font-size: 20px;
       font-family: sans-serif;
       font-weight: 300;
-      color: #4c4c4c;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -93,9 +92,9 @@
             </div>
             <div class="filter-buttons">
               <button id="all" value="all">All</button>
-              <button value="earbuds" id="earbuds">Earbuds</button>
-              <button value="mobiles" id="mobiles">Mobiles</button>
-              <button value="smartwatch" id="smartwatch">Smartwatch</button>
+              <button value="sports" id="sports">Sports</button>
+              <button value="concert" id="concert">Concert</button>
+              <button value="conference" id="conference">Conference</button>
               <button value="notebook" id="notebook">Notebook</button>
               <button value="camera" id="camera">Camera</button>
               <button value="headphones" id="headphones">Headphones</button>
@@ -128,25 +127,25 @@
 
       let img = document.createElement("img");
       img.src = ele.img;
-      img.style.width = "265px";
-      img.style.height = "300px";
+      img.classList.add("explore-img"); // Applying the new CSS class for images
 
       let title = document.createElement("h2");
       title.innerHTML = ele.title;
 
-      let div = document.createElement("div");
-      div.append(img);
-      div.addEventListener("click", () => {
+      let titleDiv = document.createElement("div");
+      titleDiv.classList.add("explore-title"); // Applying the new CSS class for title div
+      titleDiv.append(title);
+
+      let imgDiv = document.createElement("div");
+      imgDiv.append(img);
+      imgDiv.addEventListener("click", () => {
         window.location.href = `/product/singlepage/${ele._id}`;
       });
 
-      document.getElementById("box").append(div);
-      let div2 = document.createElement("div");
-      div2.append(title);
-      document.getElementById("box").append(div2);
-      let div3 = document.createElement("div");
-      div3.append(div, div2);
-      document.getElementById("box").append(div3);
+      let mainDiv = document.createElement("div");
+      mainDiv.classList.add("event-main-div")
+      mainDiv.append(imgDiv, titleDiv);
+      document.getElementById("box").append(mainDiv);
     });
   };
 
@@ -165,9 +164,9 @@
   };
 
   document.getElementById("all").addEventListener("click", allproducts);
-  document.getElementById("earbuds").addEventListener("click", () => filterdata("earbuds"));
-  document.getElementById("mobiles").addEventListener("click", () => filterdata("mobile"));
-  document.getElementById("smartwatch").addEventListener("click", () => filterdata("smartwatch"));
+  document.getElementById("sports").addEventListener("click", () => filterdata("sports"));
+  document.getElementById("concert").addEventListener("click", () => filterdata("concert"));
+  document.getElementById("conference").addEventListener("click", () => filterdata("conference"));
   document.getElementById("notebook").addEventListener("click", () => filterdata("notebook"));
   document.getElementById("camera").addEventListener("click", () => filterdata("camera"));
   document.getElementById("headphones").addEventListener("click", () => filterdata("headphones"));

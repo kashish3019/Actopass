@@ -14,7 +14,7 @@
     <%- include('adminNav') %>
 
     <div class="admin-content">
-      <h1>Your Products:</h1>
+      <h1 class="text-white">All Events List</h1>
       <div id="product-box"></div>
     </div>
   </div>
@@ -24,38 +24,44 @@
 
 <script>
   const display = (data) => {
-    document.getElementById("product-box").innerHTML = "";
-    data.map((ele) => {
-      let img = document.createElement("img");
-      img.src = ele.img;
-      img.className = "product-img";
+  document.getElementById("product-box").innerHTML = "";
+  data.map((ele) => {
+    let img = document.createElement("img");
+    img.src = ele.img;
+    img.className = "product-img";
 
-      let title = document.createElement("h3");
-      title.className = "product-title";
-      title.innerHTML = ele.title;
+    let title = document.createElement("h3");
+    title.className = "product-title";
+    title.innerHTML = ele.title;
 
-      let price = document.createElement("h4");
-      price.className = "product-price";
-      // price.innerHTML = `$ ${ele.price}`; 
+    let price = document.createElement("h4");
+    price.className = "product-price";
 
-      // Edit Button
-      let editBtn = document.createElement("button");
-      editBtn.className = "edit-btn";
-      editBtn.innerHTML = "Edit";
-      editBtn.onclick = () => window.location.href = `/product/edit/${ele._id}`;
+    // Edit Button
+    let editBtn = document.createElement("button");
+    editBtn.className = "update-edit-btn";
+    editBtn.innerHTML = "Edit";
+    editBtn.onclick = () => window.location.href = `/product/edit/${ele._id}`;
 
-      //DELETE BUTTON 
-      let deleteBtn = document.createElement("button");
-      deleteBtn.className = "delete-btn";
-      deleteBtn.innerHTML = "Delete";
-      deleteBtn.onclick = () => deleteProduct(ele._id);
+    // DELETE BUTTON 
+    let deleteBtn = document.createElement("button");
+    deleteBtn.className = "update-delete-btn";
+    deleteBtn.innerHTML = "Delete";
+    deleteBtn.onclick = () => deleteProduct(ele._id);
 
-      let div = document.createElement("div");
-      div.className = "product-card";
-      div.append(img, title, price, editBtn, deleteBtn);
-      document.getElementById("product-box").append(div);
-    });
-  };
+    // Buttons ko ek div me wrap karna
+    let btnContainer = document.createElement("div");
+    btnContainer.className = "button-container";
+    btnContainer.append(editBtn, deleteBtn);
+
+    let div = document.createElement("div");
+    div.className = "product-card";
+    div.append(img, title, price, btnContainer);
+
+    document.getElementById("product-box").append(div);
+  });
+};
+
 
   const deleteProduct = (productId) => {
     fetch(`/product/delete/${productId}`, { method: "DELETE" })

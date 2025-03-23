@@ -68,7 +68,9 @@ const getuser=async(req,res)=>{
 const home=async(req,res)=>{
     res.render("home")
 }
-
+const about=async(req,res)=>{
+    res.render("about")
+}
 // cart
 // Adds a product to the cart.
 const carts = async (req, res) => {
@@ -299,4 +301,4 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-module.exports={home,create,createBy,productpage,getuser,admin,shop,carts,cartfind,getcart,updatecart,payment,allproduct,pricefilter,filltercategory,singlepage,search,deleteProduct,productUpdate,editProductPage}
+module.exports={home,create,about,createBy,productpage,getuser,admin,shop,carts,cartfind,getcart,updatecart,payment,allproduct,pricefilter,filltercategory,singlepage,search,deleteProduct,productUpdate,editProductPage}

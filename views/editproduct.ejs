@@ -5,33 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product</title>
     <link rel="stylesheet" href="/css/adminNav.css">
-    <link rel="stylesheet" href="/css/editProduct.css">
 </head>
 <body>
     <div class="admin-container">
         <%- include('adminNav') %>
 
         <div class="admin-content">
-            <h1>Edit Event</h1>
+            <h1 class="text-white">Edit Event</h1>
             <form action="/product/productupdate" method="post">
                 <input type="hidden" name="_id" value="<%= product._id %>">
 
-                <label>Image URL:</label>
+                <label>Image URL:</label><br>
                 <input type="url" name="img" value="<%= product.img %>" required>
 
-                <label>Event Name:</label>
+                <label>Event Name:</label><br>
                 <input type="text" name="title" value="<%= product.title %>" required>
 
-                <label>Description:</label>
+                <label>Description:</label><br>
                 <textarea name="desc" required><%= product.desc %></textarea>
 
-                <label>Event Date:</label>
+                <label>Event Date:</label><br>
                 <input type="date" name="date" value="<%= product.date %>" required>
 
-                <label>Event Time:</label>
+                <label>Event Time:</label><br>
                 <input type="time" name="time" value="<%= product.time %>" required>
 
-                <label>Category:</label>
+                <label>Category:</label><br>
                 <select name="category" required>
                     <option value="concert" <%= product.category === "concert" ? "selected" : "" %>>Concert</option>
                     <option value="conference" <%= product.category === "conference" ? "selected" : "" %>>Conference</option>
@@ -40,37 +39,78 @@
                     <option value="festival" <%= product.category === "festival" ? "selected" : "" %>>Festival</option>
                 </select>
 
-                <h3>Ticket Types</h3>
+                <label>Ticket Types : </label><br>
                 <div id="ticketsContainer">
                     <% product.tickets.forEach((ticket, index) => { %>
                         <div class="ticketRow">
                             <input type="text" name="ticketType[]" value="<%= ticket.type %>" required>
-                            <input type="number" name="ticketPrice[]" value="<%= ticket.price %>" required>
+                            <input type="number" class="input-margin-top" name="ticketPrice[]" value="<%= ticket.price %>" required>
                         </div>
                     <% }); %>
-                </div>
+                </div><br>
                 <button type="button" onclick="addTicket()">➕ Add Ticket</button>
 
-                <label>Available Tickets:</label>
+                <label>Available Tickets:</label><br>
                 <input type="number" name="stock" value="<%= product.stock %>" required>
-
-                <button type="submit">Update Product</button>
+                <br>
+                <button class="input-margin-top" type="submit">Update Product</button>
             </form>
         </div>
     </div>
 
     <script>
-        function addTicket() {
-            const container = document.getElementById("ticketsContainer");
-            const div = document.createElement("div");
-            div.classList.add("ticketRow");
-            div.innerHTML = `
-                <input type="text" name="ticketType[]" placeholder="Ticket Type (e.g., VIP)" required>
-                <input type="number" name="ticketPrice[]" placeholder="Price (₹)" required>
-                <button type="button" onclick="this.parentElement.remove()">❌</button>
-            `;
-            container.appendChild(div);
+    function addTicket() {
+    const container = document.getElementById("ticketsContainer");
+    const ticketCount = container.children.length + 1; // Counting existing tickets
+
+    const div = document.createElement("div");
+    div.classList.add("ticketRow");
+
+    div.innerHTML = `
+        <label>Ticket Type: ${ticketCount}</label><br> 
+        <input type="text" name="ticketType[]" placeholder="Ticket Type (e.g., VIP)" required><br>
+        <input type="number" class="input-margin-top" name="ticketPrice[]" placeholder="Price (₹)" required>
+        <button type="button" class="cross-button" onclick="removeTicket(this)">❌</button>
+    `;
+
+    container.appendChild(div);
+}
+
+function removeTicket(button) {
+    button.parentElement.remove();
+    updateTicketLabels(); // Updating labels after removing a ticket
+}
+
+function updateTicketLabels() {
+    const tickets = document.querySelectorAll(".ticketRow label");
+    tickets.forEach((label, index) => {
+        label.innerText = `Ticket Type: ${index + 1}`;
+        if (!label.nextSibling || label.nextSibling.nodeName !== "BR") {
+            label.insertAdjacentHTML("afterend", "<br>"); // Add <br> if not already present
         }
+    });
+}
+
+// Ensure labels & remove buttons are added to existing tickets on page load
+document.addEventListener("DOMContentLoaded", function () {
+    const tickets = document.querySelectorAll(".ticketRow");
+
+    tickets.forEach((ticket, index) => {
+        const label = document.createElement("label");
+        label.innerText = `Ticket Type: ${index + 1}`;
+        ticket.prepend(label); // Add label at the beginning of each ticketRow
+        label.insertAdjacentHTML("afterend", "<br>"); // Add <br> after label
+
+        const removeBtn = document.createElement("button");
+        removeBtn.innerText = "❌";
+        removeBtn.type = "button";
+        removeBtn.classList.add("cross-button");
+        removeBtn.onclick = function () { removeTicket(this); };
+        
+        ticket.appendChild(removeBtn); // Add remove button at the end of each ticketRow
+    });
+});
+
     </script>
 </body>
 </html>

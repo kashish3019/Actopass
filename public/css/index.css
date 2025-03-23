@@ -20,10 +20,11 @@ li {
 ul li {
   padding: 20px;
 }
-
+body{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
 a {
   text-decoration: none;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 18px;
 }
 
@@ -48,7 +49,9 @@ html {
 #addproduct {
   color: brown;
 }
-
+header{
+  box-shadow: 0 3px 5px -5px #333;
+}
 .header-image img {
   width: 50%;
 }
@@ -779,11 +782,11 @@ form #category {
 }
 
 /* our product */
-.main-box {
+.as-main-box {
   position: relative;
 }
 
-.main-box:hover .second-img {
+.as-main-box:hover .second-img {
   width: 100%;
   height: 100%;
   right: 0px;
@@ -1101,11 +1104,14 @@ form #category {
   height: 500px;
   overflow: hidden;
 }
-
+.event-banner{
+  padding-top:30px ;
+}
 .event-banner img {
   width: 100%;
-  height: 500px;
+  height: 100%;
   object-fit: cover;
+  border-radius: 20px;
 }
 
 /* Event Content */
@@ -1183,4 +1189,142 @@ select {
     width: 100%;
     padding: 10px;
   }
+}
+
+/* about us css  */
+
+.header-title h2{
+  font-weight: 700;
+  color: #232323;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+.header-title p{
+  position: relative;
+  color: #232323;
+}
+.header-title p span{
+  position: absolute;
+  top: 12px;
+}
+.quote-content{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+  padding: 35px;
+  border-radius: 8px;
+  text-align: center;
+  margin: 60px 0;
+}
+.quote-content .quote-text{
+  width: 600px;
+}
+.quote-content .quote-text strong{
+  color: #8000ff;
+  font-size: 18px;
+}
+.quote-content .quote-text p{
+  font-size: 16px;
+  color: #232323;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  padding: 10px 0;
+}
+.quote-content .image-left img{
+  position: absolute;
+  top: -15px;
+  left: 0;
+  width: 40px;
+}
+.quote-content .image-right img{
+  position: absolute;
+  bottom: -10px;
+  right: 0;
+  width: 40px;
+}
+.flex-box{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+}
+.faq-main{
+  margin: 30px 0;
+}
+.faq-main .que-image{
+  width: 30px;
+}
+.faq-main .que-box h3{
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 34px;
+}
+.faq-main p{
+  color: #232323;
+  line-height: 24px;
+  margin: 0 10px;
+}
+.banner{
+  background-color: #f9f9f9;
+  text-align: center;
+  padding: 30px;
+  border: 1px solid #e4e4e4;
+  margin: 50px 0;
+}
+.banner .banner-content{
+  margin: 0 200px;
+}
+.banner .banner-content h3{
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  line-height: 30px;
+}
+.banner .banner-content p{
+  color: #666666;
+  line-height: 24px;
+}
+.service-banner{
+  padding: 10px 30px;
+}
+.service-banner .service-items{
+  display: flex;
+  align-items: center;
+  width: 50%;
+  margin-bottom: 20px;
+}
+.service-banner .service-items p{
+  font-size: 14px;
+  padding-left: 10px;
+  color: #333333;
+}
+.services-description p{
+  color: #555555;
+  line-height: 24px;
+  padding: 10px 30px;
+}
+
+.explore-img {
+  width: 450px;
+  height: 300px;
+  border-radius: 20px;
+}
+
+.event-main-div {
+  padding-bottom: 40px;
+  text-align: center;
+}
+
+.explore-title {
+  padding-top: 10px;
+  transition: color 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
+  display: inline-block;
+}
+
+.event-main-div:hover .explore-title {
+  color: #8e2fd1; 
+  border-bottom: 1px solid #8e2fd1;
 }

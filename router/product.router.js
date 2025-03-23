@@ -1,11 +1,12 @@
 const {Router}=require("express")
 const verifyToken=require("../middleware/isauth")
 const isAdmin = require("../middleware/admin")
-const{create,createBy,productpage,getuser, shop, carts, cartfind,getcart,updatecart, payment, home, allproduct, filltercategory, pricefilter, singlepage, admin, search, deleteProduct, updateProduct, productUpdate, editProductPage}=require("../controllers/product.controllers")
+const{create,createBy,productpage,getuser, shop, carts, cartfind,getcart,updatecart, payment, home, allproduct, filltercategory, pricefilter, singlepage, admin, search, deleteProduct, updateProduct, productUpdate, editProductPage, about}=require("../controllers/product.controllers")
 const route=Router()
 
 route.get("/home",verifyToken,home)
 route.get("/shop",verifyToken,shop)
+route.get("/about",about)
 route.get("/",create)
 route.post("/productpage",isAdmin,createBy)
 route.get("/productpage",isAdmin,productpage)
