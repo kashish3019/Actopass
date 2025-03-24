@@ -32,12 +32,15 @@
 
                 <label>Category:</label><br>
                 <select name="category" required>
-                    <option value="concert" <%= product.category === "concert" ? "selected" : "" %>>Concert</option>
-                    <option value="conference" <%= product.category === "conference" ? "selected" : "" %>>Conference</option>
-                    <option value="sports" <%= product.category === "sports" ? "selected" : "" %>>Sports</option>
-                    <option value="theater" <%= product.category === "theater" ? "selected" : "" %>>Theater</option>
-                    <option value="festival" <%= product.category === "festival" ? "selected" : "" %>>Festival</option>
-                </select>
+                    <option value="Music" <%= product.category === "Music" ? "selected" : "" %>>Music & Entertainment</option>
+                    <option value="Cultural" <%= product.category === "Cultural" ? "selected" : "" %>>Cultural & Arts</option>
+                    <option value="Food" <%= product.category === "Food" ? "selected" : "" %>>Food & Drink</option>
+                    <option value="Sports" <%= product.category === "Sports" ? "selected" : "" %>>Sports & Adventure</option>
+                    <option value="Business" <%= product.category === "Business" ? "selected" : "" %>>Business & Networking</option>
+                    <option value="Social" <%= product.category === "Social" ? "selected" : "" %>>Social</option>
+                    <option value="Fashion" <%= product.category === "Fashion" ? "selected" : "" %>>Fashion</option>
+                    <option value="Technical" <%= product.category === "Technical" ? "selected" : "" %>>Technical</option>
+                </select>                
 
                 <label>Ticket Types : </label><br>
                 <div id="ticketsContainer">

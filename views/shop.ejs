@@ -92,12 +92,14 @@
             </div>
             <div class="filter-buttons">
               <button id="all" value="all">All</button>
-              <button value="sports" id="sports">Sports</button>
-              <button value="concert" id="concert">Concert</button>
-              <button value="conference" id="conference">Conference</button>
-              <button value="notebook" id="notebook">Notebook</button>
-              <button value="camera" id="camera">Camera</button>
-              <button value="headphones" id="headphones">Headphones</button>
+              <button value="Music" id="Music">Music & Entertainment</button>
+              <button value="Cultural" id="Cultural">Cultural & Arts</button>
+              <button value="Food" id="Food">Food & Drink</button>
+              <button value="Sports" id="Sports">Sports & Adventure</button>
+              <button value="Business" id="Business">Business & Networking</button>
+              <button value="Social" id="Social">Social</button>
+              <button value="Fashion" id="Fashion">Fashion</button>
+              <button value="Technical" id="Technical">Technical</button>
               <button value="other" id="other">Other</button>
             </div>
           </div>
@@ -167,13 +169,15 @@
   };
 
   document.getElementById("all").addEventListener("click", allproducts);
-  document.getElementById("sports").addEventListener("click", () => filterdata("sports"));
-  document.getElementById("concert").addEventListener("click", () => filterdata("concert"));
-  document.getElementById("conference").addEventListener("click", () => filterdata("conference"));
-  document.getElementById("notebook").addEventListener("click", () => filterdata("notebook"));
-  document.getElementById("camera").addEventListener("click", () => filterdata("camera"));
-  document.getElementById("headphones").addEventListener("click", () => filterdata("headphones"));
-  document.getElementById("other").addEventListener("click", () => filterdata("other"));
+  document.getElementById("Music").addEventListener("click", () => filterdata("Music"));
+  document.getElementById("Cultural").addEventListener("click", () => filterdata("Cultural"));
+  document.getElementById("Food").addEventListener("click", () => filterdata("Food"));
+  document.getElementById("Sports").addEventListener("click", () => filterdata("Sports"));
+  document.getElementById("Business").addEventListener("click", () => filterdata("Business"));
+  document.getElementById("Social").addEventListener("click", () => filterdata("Social"));
+  document.getElementById("Fashion").addEventListener("click", () => filterdata("Fashion"));
+  document.getElementById("Technical").addEventListener("click", () => filterdata("Technical"));
+
 
   document.getElementById("search").addEventListener("input", () => {
     search();
