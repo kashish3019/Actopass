@@ -7,7 +7,9 @@
 body{
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-
+a{
+  text-decoration: none;
+}
 .row {
   display: flex;
   height: 100vh;
@@ -118,7 +120,6 @@ tr:hover {
   transition: 0.3s ease-in-out;
 }
 
-/* Form Container */
 form {
   width: 100%;
     margin: 40px auto;
@@ -128,14 +129,12 @@ form {
     box-shadow: 0 0 10px rgb(255 250 250 / 10%);
 }
 
-/* Form Headings */
 h1 {
   text-align: center;
   color: #26355D;
   margin-bottom: 20px;
 }
 
-/* Labels */
 label {
   font-weight: bold;
   margin-top: 20px;
@@ -143,7 +142,6 @@ label {
   color: #fff;
 }
 
-/* Input Fields */
 input, select , textarea{
   width: 100%;
   padding: 10px;
@@ -154,13 +152,11 @@ input, select , textarea{
   background-color: #bda7cd82;
 }
 
-/* Button Container */
 .pbtn {
   text-align: center;
   margin-top: 15px;
 }
 
-/* Submit Button */
 button {
   background: #8e2fd1;
   color: white;
@@ -180,7 +176,6 @@ button:hover {
 .input-margin-top{
   margin-top: 20px;
 }
-/* Main Layout */
 .admin-container {
   display: flex;
   height: 100vh;
@@ -193,7 +188,6 @@ button:hover {
   padding: 10px 0px;
 }
 
-/* Content Section */
 .admin-content {
   width: 80%;
   margin-left: 20%;
@@ -207,7 +201,6 @@ button:hover {
   margin-bottom: 20px;
 }
 
-/* Product Grid */
 #product-box {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -215,7 +208,6 @@ button:hover {
   justify-content: center;
 }
 
-/* Product Card */
 .product-card {
   background: #f5e9fc;
   padding: 15px;
@@ -227,7 +219,7 @@ button:hover {
 }
 .button-container {
   position: absolute;
-  bottom: 10px;  /* Buttons will stick to the bottom */
+  bottom: 10px;  
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -247,27 +239,23 @@ button:hover {
 .update-delete-btn:hover{
   background-color: rgba(255, 0, 0, 0.458);
 }
-/* Product Image */
 .product-img {
   width: 100%;
   border-radius: 5px;
 }
 
-/* Product Title */
 .product-title {
   font-family: sans-serif;
   padding: 5px;
   color: rgb(88, 85, 85);
 }
 
-/* Product Price */
 .product-price {
   font-family: sans-serif;
   padding: 5px;
   color: rgba(88, 85, 85, 0.716);
 }
 
-/* Delete Button */
 .delete-btn {
   display: block;
   margin: 10px auto;
@@ -282,4 +270,45 @@ button:hover {
 
 .delete-btn:hover {
   background: #c0392b;
+}
+
+/* get banner css  */
+
+.add-banner {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.banner-img {
+  width: 300px;
+  border-radius: 5px;
+}
+.get-banner-btn{
+  background-color: transparent;
+}
+/* add banner css  */
+.as-banner-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.height-100vh{
+  height: 100vh;
+}
+.banner-add-button{
+  margin-top: 20px;
+  margin-right: 10px;
+}
+.banner-cancle{
+  background-color:rgb(255 0 0);
+}
+.banner-cancle:hover{
+  background-color: rgba(255, 0, 0, 0.458);;
+}
+/* edit banner css  */
+.as-img-preview{
+  width: 100%;
+  border-radius: 5px;
 }

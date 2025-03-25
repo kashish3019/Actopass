@@ -7,18 +7,32 @@
     <title>Home</title>
     <link rel="stylesheet" href="/all.min.css">
     <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
 </head>
 
 <body>
     <%- include('nav') %>
-
         <div>
             <a href="#" class="backtotop">
                 <i class="fa-solid fa-arrow-up"></i>
             </a>
         </div>
-
+        <section class="home_banner">
+            <div class="swiper home_banner_swiper">
+                <div class="swiper-wrapper">
+                    <% banners.forEach((item) => { %>
+                        <div class="swiper-slide">
+                            <img src="/images/<%= item.img %>" alt="Banner">
+                        </div>
+                    <% }); %>
+                </div>
+                <!-- Swiper Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <!-- Swiper Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
         <section class="home_product">
             <div class="container">
                 <h2 class="event-heading">Events You Love, Booked Your Way <span><svg xmlns="http://www.w3.org/2000/svg"
@@ -182,6 +196,23 @@ var swiper = new Swiper(".mySwiper", {
         prevEl: ".swiper-button-prev",
       },
     });
+</script>
+<script>
+var swiper = new Swiper('.home_banner_swiper', {
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });    
 </script>
 <script>
     fetch("/product")

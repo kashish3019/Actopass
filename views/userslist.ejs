@@ -55,7 +55,7 @@
         if (confirm("Are you sure you want to delete this user?")) {
             fetch(`/user/deleteuser/${userId}`, { method: "DELETE" })
                 .then(response => {
-                    console.log("Response status:", response.status); // Log the response status
+                    console.log("Response status:", response.status); 
                     return response.json();
                 })
                 .then(result => {
