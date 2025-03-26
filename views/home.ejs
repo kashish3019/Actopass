@@ -17,21 +17,22 @@
                 <i class="fa-solid fa-arrow-up"></i>
             </a>
         </div>
-        <section class="home_banner">
+        <section class="home_banner_slider">
+           <div class="container">
             <div class="swiper home_banner_swiper">
                 <div class="swiper-wrapper">
-                    <% banners.forEach((item) => { %>
+                    <% bannerhome.forEach((item) => { %>
                         <div class="swiper-slide">
                             <img src="/images/<%= item.img %>" alt="Banner">
                         </div>
                     <% }); %>
+                    
                 </div>
-                <!-- Swiper Navigation -->
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
-                <!-- Swiper Pagination -->
                 <div class="swiper-pagination"></div>
             </div>
+           </div>
         </section>
         <section class="home_product">
             <div class="container">

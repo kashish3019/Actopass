@@ -86,9 +86,7 @@ const addBanner = async (req, res) => {
   const bannerget = async (req, res) => {
     try {
       const banners = await banner.find()
-      res.render("bannerget", {
-        banners: banners,
-      });
+      res.render("bannerget", {banners});
     } catch (error) {
       return res.status(400).send({
         status: false,

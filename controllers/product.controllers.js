@@ -1,5 +1,6 @@
 const product=require("../models/product.schema")
 const cart=require("../models/cart.schema")
+const banner=require("../models/banner.schema")
 const Razorpay = require("razorpay")
 const Fuse=require("fuse.js")
 const user = require("../models/user.schema")
@@ -66,7 +67,8 @@ const getuser=async(req,res)=>{
     res.render("users")
 }
 const home=async(req,res)=>{
-    res.render("home")
+      const bannerhome= await banner.find()
+          res.render("home", {bannerhome});
 }
 const about=async(req,res)=>{
     res.render("about")

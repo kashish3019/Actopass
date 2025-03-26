@@ -1071,7 +1071,7 @@ form #category {
 }
 
 .event-title strong {
-  color: #7d1fd2;
+  color: #8e2fd1;
   text-decoration: underline;
 }
 .bg-svg-1{
@@ -1120,7 +1120,7 @@ form #category {
 
 .event-price {
   font-size: 14px;
-  color: #7d1fd2;
+  color: #8e2fd1;
   font-weight: 500;
   padding-bottom: 10px;
 }
@@ -1154,33 +1154,49 @@ form #category {
 .feature-paddingB-10{
   padding-bottom: 10px;
 }
-.swiper {
-  width: 100%;
-  height: 300px; /* Adjust as needed */
+/* home banner css  */
+.home_banner_slider{
+  padding: 50px 0 0;
 }
-
-.planner-image {
+.swiper {
+  position: relative;
   width: 100%;
   height: auto;
-  object-fit: cover;
-}
-.swiper {
-  width: 100%;
-  height: 100%;
-}
-
-.swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border-radius: 15px; 
+  overflow: hidden;
 }
 
 .swiper-slide img {
-  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  border-radius: 15px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  width: 45px;
+  height: 45px;
+  background: white;
+  color: black;
+  font-size: 18px;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.swiper-button-prev {
+  left: 10px;
+}
+
+.swiper-button-next {
+  right: 10px;
+}
+
+.swiper-pagination-bullet-active{
+  background: #8e2fd1;
 }
