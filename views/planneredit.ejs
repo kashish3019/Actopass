@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="/css/adminNav.css">
+</head>
+<body>
+    <%- include('adminNav') %>
+<div class="content height-100vh">
+  <h1 class="text-white">Edit Banner</h1>
+  <form action="/product/updateplanner" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="_id" value="<%= planners._id %>">
+    
+    <% if (planners.img) { %>
+      <div>
+        <img id="editPackageImagePreview" src="/images/<%= planners.img %>" alt="Icon Preview" class="as-img-planner">
+      </div>
+    <% } %>
+    
+    <div class="as-form-group">
+      <label for="img" >Upload Image</label><br>
+      <input type="file" name="img" accept="image/*">
+    </div>
+
+    <button type="submit" class="banner-add-button">Update</button>
+    <button class="banner-cancle"><a href="/product/getplanner" class="text-white">Cancel</a></button>
+  </form>
+</div>
+
+</body>
+</html>

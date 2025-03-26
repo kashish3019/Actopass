@@ -1,16 +1,17 @@
-const product=require("../models/product.schema")
-const cart=require("../models/cart.schema")
-const banner=require("../models/banner.schema")
+const product = require("../models/product.schema")
+const cart = require("../models/cart.schema")
+const banner = require("../models/banner.schema")
+const planner = require("../models/planner.schema")
 const Razorpay = require("razorpay")
-const Fuse=require("fuse.js")
+const Fuse = require("fuse.js")
 const user = require("../models/user.schema")
 
-const create=async(req,res)=>{
-    try{
-        let data=await product.find()
+const create = async (req, res) => {
+    try {
+        let data = await product.find()
         res.send(data)
     }
-    catch(error){
+    catch (error) {
         res.status(404).send(error.message)
     }
 }
@@ -50,27 +51,35 @@ const createBy = async (req, res) => {
 
 // admin
 
-const admin=async(req,res)=>{
-    let data=await product.find({createBy:req.user.id})
+const admin = async (req, res) => {
+    let data = await product.find({ createBy: req.user.id })
     res.send(data)
 }
 
-const shop=async(req,res)=>{
+const shop = async (req, res) => {
     res.render("shop")
 }
 
-const productpage=async(req,res)=>{
+const productpage = async (req, res) => {
     res.render("productpage")
 }
 
-const getuser=async(req,res)=>{
+const getuser = async (req, res) => {
     res.render("users")
 }
-const home=async(req,res)=>{
-      const bannerhome= await banner.find()
-          res.render("home", {bannerhome});
-}
-const about=async(req,res)=>{
+const home = async (req, res) => {
+    try {
+        const bannerhome = await banner.find();
+        const plannerhome = await planner.find();
+        
+        res.render("home", { bannerhome, plannerhome }); // Render both in a single call
+    } catch (error) {
+        console.error("Error fetching data for home:", error);
+        res.status(500).send("Error loading home page");
+    }
+};
+
+const about = async (req, res) => {
     res.render("about")
 }
 // cart
@@ -111,14 +120,14 @@ const cartfind = async (req, res) => {
     console.log("Fetching cart for user:", req.user.id); // Debugging
 
     let data = await cart.find({ userID: req.user.id }).populate("productID");
-    
+
     console.log("Cart Data:", data); // Debugging: Log fetched cart items
 
     res.send(data);
 };
 
 // Renders the cart page using a template engine
-const getcart=async(req,res)=>{
+const getcart = async (req, res) => {
     res.render("cart")
 }
 // Updates the quantity of a cart item or removes it if the quantity reaches 0.
@@ -143,11 +152,11 @@ const updatecart = async (req, res) => {
 };
 
 
-const allproduct = async(req,res) =>{
+const allproduct = async (req, res) => {
     try {
         let data = await product.find()
         res.send(data)
-    } 
+    }
     catch (error) {
         res.send({ msg: error })
     }
@@ -181,8 +190,8 @@ const pricefilter = async (req, res) => {
 }
 
 let razorpay = new Razorpay({
-    key_id:"rzp_test_7Grqtls4UrZJlU",
-    key_secret:"UvsWz2UDN7jcSM58yluYTxIz"
+    key_id: "rzp_test_7Grqtls4UrZJlU",
+    key_secret: "UvsWz2UDN7jcSM58yluYTxIz"
 })
 
 const payment = (req, res) => {
@@ -225,38 +234,38 @@ const singlepage = async (req, res) => {
     }
 };
 
-const search = async(req,res)=>{
-   
-        const {query} = req.query;
+const search = async (req, res) => {
 
-        console.log(query);
-        const products = await product.find();
+    const { query } = req.query;
 
-        const options = {
-            keys:["title","category","price"], 
-        }
+    console.log(query);
+    const products = await product.find();
 
-        const fuse = new Fuse(products,options);
-        const result = fuse.search(query);
-        console.log(result);
-        return res.send(result);
+    const options = {
+        keys: ["title", "category", "price"],
+    }
+
+    const fuse = new Fuse(products, options);
+    const result = fuse.search(query);
+    console.log(result);
+    return res.send(result);
 }
 
 const deleteProduct = async (req, res) => {
     try {
-      const { id } = req.params;
-      const deletedProduct = await product.findByIdAndDelete(id);
-      if (deletedProduct) {
-        return res.status(200).json({ message: "Product deleted successfully" });
-      } else {
-        return res.status(404).json({ message: "Product not found" });
-      }
+        const { id } = req.params;
+        const deletedProduct = await product.findByIdAndDelete(id);
+        if (deletedProduct) {
+            return res.status(200).json({ message: "Product deleted successfully" });
+        } else {
+            return res.status(404).json({ message: "Product not found" });
+        }
     } catch (error) {
-      return res.status(500).json({ message: "Error deleting product", error });
+        return res.status(500).json({ message: "Error deleting product", error });
     }
-  };
+};
 
-  const productUpdate = async (req, res) => {
+const productUpdate = async (req, res) => {
     try {
         const { _id, title, desc, date, time, category, stock, ticketType, ticketPrice, img } = req.body;
 
@@ -290,7 +299,7 @@ const deleteProduct = async (req, res) => {
 };
 
 
-  const editProductPage = async (req, res) => {
+const editProductPage = async (req, res) => {
     try {
         const { id } = req.params;
         let productData = await product.findById(id);
@@ -303,4 +312,4 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-module.exports={home,create,about,createBy,productpage,getuser,admin,shop,carts,cartfind,getcart,updatecart,payment,allproduct,pricefilter,filltercategory,singlepage,search,deleteProduct,productUpdate,editProductPage}
+module.exports = { home, create, about, createBy, productpage, getuser, admin, shop, carts, cartfind, getcart, updatecart, payment, allproduct, pricefilter, filltercategory, singlepage, search, deleteProduct, productUpdate, editProductPage }

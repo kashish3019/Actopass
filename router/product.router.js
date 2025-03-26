@@ -52,6 +52,20 @@ route.get("/addbanner",bannercontroller.Addbanner)
 // home page get
 route.get("/", bannercontroller.getHomeBanners); 
 
+
+// planner section
+const plannercontroller=require("../controllers/planner.controller")
+// backend api
+route.post("/addplanner",upload,plannercontroller.addplanner)
+route.post("/updateplanner",upload,plannercontroller.Updateplanner)
+route.delete("/deleteplanner/:planner_id", plannercontroller.Deleteplanner);
+// fronted api
+route.get("/getplanner",plannercontroller.plannerget)
+route.get("/editplanner",plannercontroller.plannerEdit)
+route.get("/addplanner",plannercontroller.Addplanner)
+// home page get
+route.get("/", plannercontroller.getHomeplanners);
+
 route.post("/payment",payment)
 route.delete("/delete/:id", isAdmin, deleteProduct);
 

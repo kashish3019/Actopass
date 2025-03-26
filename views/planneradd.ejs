@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add Banner</title>
+  <link rel="stylesheet" href="/css/adminNav.css">
+</head>
+<body>
+<!-- Sidebar -->
+<%- include('adminNav') %>
+<div class="content height-100vh">
+  <h1 class="text-white">Add Banner</h1>
+  <form action="/product/addplanner" method="post" enctype="multipart/form-data">
+      <label>Banner Image</label><br>
+      <input type="file" name="img" class="as-form-input" required>
+      
+    <button type="submit" class="banner-add-button">Add</button>
+    <button class="banner-cancle"><a href="/product/getplanner" class="text-white ">Cancel</a></button>
+  </form>
+</div>
+
+</body>
+</html>

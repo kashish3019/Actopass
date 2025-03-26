@@ -283,6 +283,10 @@ button:hover {
   width: 300px;
   border-radius: 5px;
 }
+.planner-img{
+  width: 200px;
+  border-radius: 5px;
+}
 .get-banner-btn{
   background-color: transparent;
 }
@@ -310,5 +314,9 @@ button:hover {
 /* edit banner css  */
 .as-img-preview{
   width: 100%;
+  border-radius: 5px;
+}
+.as-img-planner{
+  width: 200px;
   border-radius: 5px;
 }
