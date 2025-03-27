@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,138 +8,103 @@
     <link rel="stylesheet" href="/css/adminNav.css">
     <link rel="stylesheet" href="/all.min.css">
 </head>
+
 <body>
-   <div class="row">
-       <!-- Sidebar -->
-       <%- include('adminNav') %>
+    <div class="row">
+        <!-- Sidebar -->
+        <%- include('adminNav') %>
 
-       <!-- Main Content -->
-       <div class="content">
-           <h1 id="addEvent" class="text-white">Add Event</h1>
-           <form action="/product/productpage" method="post" id="eventForm">
-               <label>Image URL:</label><br>
-               <input type="url" name="img" id="img" required><br>
+            <!-- Main Content -->
+            <div class="content">
+                <h1 id="addEvent" class="text-white">Add Event</h1>
+                <form action="/product/productpage" method="post" id="eventForm" enctype="multipart/form-data">
+                    
+                    <label>Image URL:</label><br>
+                    <input type="file" name="img" id="img" required><br>
 
-               <label>Event Name:</label><br>
-               <input type="text" name="title" id="title" required><br>
+                    <label>Event Name:</label><br>
+                    <input type="text" name="title" id="title" required><br>
 
-               <label>Description:</label><br>
-               <textarea name="desc" id="desc" required></textarea><br>
+                    <label>Description:</label><br>
+                    <textarea name="desc" id="desc" required></textarea><br>
 
-               <label>Event Date:</label><br>
-               <input type="date" name="date" id="date" required><br>
+                    <label>Event Date:</label><br>
+                    <input type="date" name="date" id="date" required><br>
 
-               <label>Event Time:</label><br>
-               <input type="time" name="time" id="time" required><br>
+                    <label>Event Time:</label><br>
+                    <input type="time" name="time" id="time" required><br>
 
-               <label>Category:</label><br>
-               <select name="category" id="category" required>
-                   <option value="Music">Music & Entertainment</option>
-                   <option value="Cultural">Cultural & Arts</option>
-                   <option value="Food">Food & Drink</option>
-                   <option value="Sports">Sports & Adventure</option>
-                   <option value="Business">Business & Networking</option>
-                   <option value="Social">Social</option>
-                   <option value="Fashion">Fashion</option>
-                   <option value="Technical">Technical</option>
-               </select><br>
+                    <label>Event Address:</label><br>
+                    <input type="text" name="address" required>
 
-               <label>Ticket Types</label><br>
-               <div id="ticketsContainer">
-                   <div class="ticketRow">
-                       <input type="text" name="ticketType[]" placeholder="Ticket Type (e.g., VIP)" required>
-                       <input type="number" class="input-margin-top" name="ticketPrice[]" placeholder="Price (₹)" required>
-                       <button type="button" class="cross-button"onclick="removeTicket(this)">❌ Remove</button>
-                   </div>
-               </div>
-               
-               <button type="button" onclick="addTicket()">➕ Add Ticket</button>
+                    <label>Google Map Embed Code:</label><br>
+                    <textarea name="mapEmbed" rows="4" placeholder="Paste Google Maps embed code here"></textarea>
 
-               <label>Available Tickets:</label><br>
-               <input type="number" name="stock" id="stock" required><br>
+                    <label>Category:</label><br>
+                    <select name="category" id="category" required>
+                        <option value="Music">Music & Entertainment</option>
+                        <option value="Cultural">Cultural & Arts</option>
+                        <option value="Food">Food & Drink</option>
+                        <option value="Sports">Sports & Adventure</option>
+                        <option value="Business">Business & Networking</option>
+                        <option value="Social">Social</option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Technical">Technical</option>
+                    </select><br>
 
-               <div class="pbtn">
-                   <button type="submit">Submit</button>
-               </div>
-           </form>
-       </div>
-   </div>
+                    <label>Ticket Types</label><br>
+                    <div id="ticketsContainer">
+                        <div class="ticketRow">
+                            <input type="text" name="ticketType[]" placeholder="Ticket Type (e.g., VIP)" required>
+                            <input type="number" class="input-margin-top" name="ticketPrice[]" placeholder="Price (₹)"
+                                required>
+                            <button type="button" class="cross-button" onclick="removeTicket(this)">❌ Remove</button>
+                        </div>
+                    </div>
 
-   <script>
-    function addTicket() {
-    const container = document.getElementById("ticketsContainer");
-    const ticketCount = container.children.length + 1; // Counting existing tickets
+                    <button type="button" onclick="addTicket()">➕ Add Ticket</button>
 
-    const div = document.createElement("div");
-    div.classList.add("ticketRow");
+                    <label>Available Tickets:</label><br>
+                    <input type="number" name="stock" id="stock" required><br>
 
-    div.innerHTML = `
+                    <div class="pbtn">
+                        <button type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+    </div>
+
+    <script>
+        function addTicket() {
+            const container = document.getElementById("ticketsContainer");
+            const ticketCount = container.children.length + 1; // Counting existing tickets
+
+            const div = document.createElement("div");
+            div.classList.add("ticketRow");
+
+            div.innerHTML = `
         <label>Ticket Type: ${ticketCount}</label> <br>
         <input type="text" name="ticketType[]" placeholder="Ticket Type (e.g., VIP)" required>
         <input type="number" class="input-margin-top" name="ticketPrice[]" placeholder="Price (₹)" required>
         <button type="button" class="cross-button" onclick="removeTicket(this)">❌</button>
     `;
 
-    container.appendChild(div);
-}
-
-function removeTicket(button) {
-    button.parentElement.remove();
-    updateTicketLabels(); 
-}
-
-function updateTicketLabels() {
-    const tickets = document.querySelectorAll(".ticketRow label");
-    tickets.forEach((label, index) => {
-        label.innerText = `Ticket Type: ${index + 1}`;
-    });
-}
-
-
-       document.getElementById("eventForm").addEventListener("submit", async function(event) {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
-    const ticketTypes = formData.getAll("ticketType[]");
-    const ticketPrices = formData.getAll("ticketPrice[]");
-
-    const tickets = ticketTypes.map((type, index) => ({
-        type,
-        price: Number(ticketPrices[index])
-    }));
-
-    const eventData = {
-        title: formData.get("title"),
-        img: formData.get("img"),
-        desc: formData.get("desc"),
-        date: formData.get("date"),
-        time: formData.get("time"),
-        tickets,
-        category: formData.get("category"),
-        stock: Number(formData.get("stock"))
-    };
-
-    try {
-        const response = await fetch("/product/productpage", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(eventData)
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            alert(result.message);
-            event.target.reset(); // Clear form
-        } else {
-            alert(`Error: ${result.message}`);
+            container.appendChild(div);
         }
-    } catch (error) {
-        console.error("Error:", error);
-        alert("Something went wrong. Please try again.");
-    }
-});
 
-   </script>
+        function removeTicket(button) {
+            button.parentElement.remove();
+            updateTicketLabels();
+        }
+
+        function updateTicketLabels() {
+            const tickets = document.querySelectorAll(".ticketRow label");
+            tickets.forEach((label, index) => {
+                label.innerText = `Ticket Type: ${index + 1}`;
+            });
+        }
+
+    </script>
 </body>
+
 </html>

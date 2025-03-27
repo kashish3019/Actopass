@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Offer add</title>
+  <link rel="stylesheet" href="/css/adminNav.css">
+</head>
+<body>
+<!-- Sidebar -->
+<%- include('adminNav') %>
+<div class="content height-100vh">
+  <h1 class="text-white">Add Banner</h1>
+  <form action="/product/addoffer" method="post" enctype="multipart/form-data">
+    <div style="margin-top: 10px;">
+        <img id="offer" src="" alt="Selected Image" style="width: 100%; display: none;">
+      </div>
+      <label>offer Image</label><br>
+      <input type="file" name="img" class="as-form-input" id="offerInput" required>
+      
+
+    <button type="submit" class="banner-add-button">Add</button>
+    <button class="banner-cancle"><a href="/product/getoffer" class="text-white">Cancel</a></button>
+  </form>
+</div>
+
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const bannerInput = document.getElementById('offerInput');
+      const imagePreview = document.getElementById('offer');
+  
+      bannerInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+  
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block'; // ✅ Show preview only when image is selected
+          }
+          reader.readAsDataURL(file);
+        } else {
+          imagePreview.src = "";
+          imagePreview.style.display = 'none'; // ✅ Hide preview when no image is selected
+        }
+      });
+    });
+  </script>
+</html>

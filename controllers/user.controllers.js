@@ -113,7 +113,7 @@ const email = async (req, res) => {
   res.render("email");
 };
 
-let userdata={}
+let userdata = {}
 
 const reset = async (req, res) => {
   let { email } = req.body;
@@ -129,7 +129,7 @@ const reset = async (req, res) => {
     from: "kbpatel3019@gmail.com",
     to: email,
     subject: "Forgot Password",
-    html: `<a href="http://localhost:8090/user/otp">Verify your OTP: ${userdata.otp}</a>`,
+    html: `<h2>Verify your OTP: <strong>${userdata.otp}<strong><h2>`,
   };
 
   transport.sendMail(mail, (err, info) => {
@@ -189,10 +189,10 @@ const logout = (req, res) => {
 const forgot = (req, res) => {
   res.render("forgot");
 };
-const resetpass=(req,res)=>{
+const resetpass = (req, res) => {
   res.render("resetpass")
 }
-const otp1=(req,res)=>{
+const otp1 = (req, res) => {
   res.render("otp")
 }
 
@@ -200,7 +200,7 @@ const forgotpass = async (req, res) => {
   const { newpassword, confrompassword } = req.body;
 
   console.log(newpassword, confrompassword);
-  
+
   if (newpassword === confrompassword) {
     try {
       let updatedata = await user.findOne({ email: userdata.email });
@@ -217,7 +217,7 @@ const forgotpass = async (req, res) => {
           console.log("data", updatedata);
           userdata = {};
 
-          return res.send("Password has been successfully changed.");
+          return res.send('<script>alert("Password successfully changed! Please login."); window.location.href="/user/login";</script>');
         });
       } else {
         res.send("User not found.");
@@ -231,19 +231,19 @@ const forgotpass = async (req, res) => {
   }
 };
 // to show list of user
-const listuser=async(req,res)=>{
-try{
-  const users=await user.find()
-  res.render("userslist",{users})
-}
-catch (error) {
-  return res.status(400).json({
-    status: false,
-    code: 400,
-    message: "Error fetching players",
-    data: {},
-  });
-}
+const listuser = async (req, res) => {
+  try {
+    const users = await user.find()
+    res.render("userslist", { users })
+  }
+  catch (error) {
+    return res.status(400).json({
+      status: false,
+      code: 400,
+      message: "Error fetching players",
+      data: {},
+    });
+  }
 }
 
 const deleteUser = async (req, res) => {
@@ -275,7 +275,7 @@ module.exports = {
   logout,
   forgot,
   forgotpass,
-  resetpass,otp1,
+  resetpass, otp1,
   listuser,
   deleteUser,
   adminProfile

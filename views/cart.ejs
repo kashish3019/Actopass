@@ -25,8 +25,9 @@
     <button id="totalPriceBtn" class="total-price-btn">Total Price: ₹ 0</button>
   </div>
   <%- include('footer') %>
-
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
+
     const updateQty = (id, change) => {
       fetch(`/product/cart/update/${id}`, {
         method: "PATCH",
@@ -58,12 +59,14 @@
     };
 
     const display = (data) => {
-      let totalprice = 0;
-      const cartBody = document.getElementById("cart-body");
-      cartBody.innerHTML = ""; 
+    let totalprice = 0;
+    const cartBody = document.getElementById("cart-body");
+    cartBody.innerHTML = ""; 
 
-      data.forEach((element) => {
+    data.forEach((element) => {
         let product = element.productID;
+        if (!product) return; // Skip if product is not found
+
         let ticketPrice = element.price;
         let ticketType = element.ticketType;
         totalprice += ticketPrice * element.qty;
@@ -72,13 +75,13 @@
 
         let imgTd = document.createElement("td");
         let img = document.createElement("img");
-        img.src = product.img;
+        img.src = product.img ? `/images/${product.img}` : "/images/default.png"; // Handle missing image
         img.classList.add("cart-img");
         imgTd.appendChild(img);
 
         let detailsTd = document.createElement("td");
         detailsTd.innerHTML = `
-          <div class="cart-item-title">${product.title}</div>
+          <div class="cart-item-title">${product.title || "No Title"}</div>
           <div class="cart-item-info"><strong>Ticket Type:</strong> ${ticketType}</div>
           <div class="cart-item-info"><strong>Price:</strong> ₹${ticketPrice}</div>
         `;
@@ -102,12 +105,13 @@
 
         row.append(imgTd, detailsTd, qtyTd);
         cartBody.appendChild(row);
-      });
+    });
 
-      let totalPriceBtn = document.getElementById("totalPriceBtn");
-      totalPriceBtn.innerHTML = `Total Price: ₹ ${totalprice}`;
-      totalPriceBtn.addEventListener("click", () => handlePayment(totalprice));
-    };
+    let totalPriceBtn = document.getElementById("totalPriceBtn");
+    totalPriceBtn.innerHTML = `Total Price: ₹ ${totalprice}`;
+    totalPriceBtn.addEventListener("click", () => handlePayment(totalprice));
+};
+
 
     const get = async () => {
       fetch("/product/cartfind")

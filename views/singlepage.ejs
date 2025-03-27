@@ -16,7 +16,7 @@
     <div class="container padding-b-100">
       <!-- Event Banner Image -->
       <div class="event-banner">
-        <img src="<%= singlepage.img %>" alt="<%= singlepage.title %>">
+        <img src="/images/<%= singlepage.img %>" alt="<%= singlepage.title %>">
       </div>
 
       <!-- Event Content Section -->
@@ -30,22 +30,36 @@
           <p class="event-description">
             <%= singlepage.desc %>
           </p>
+          <h3 class="event-add"><strong>Address :</strong></h3>
+          <p><%= singlepage.address %></p>
+
+          <h3 class="event-gmap"><strong>Google Map :</strong></h3>
+          <div class="gmap-emb"><%- singlepage.mapEmbed %></div>
+
         </div>
 
         <!-- Right Side: Event Details -->
         <div class="event-right">
-          <p><strong>Event Date:</strong></p>
+          <h2 class="pb-10">Rs.<span id="selectedPrice">
+              <% if (singlepage.tickets && singlepage.tickets.length > 0) { %>
+                <%= singlepage.tickets[0].price %> 
+                  <% } else { %>
+                    0
+                    <% } %>
+                   </span></h2>
+
+          <p>Event Date :</p>
           <div class="event-box" id="eventDate">
             <%= singlepage.date %>
           </div>
 
-          <p><strong>Event Time:</strong></p>
+          <p>Event Time :</p>
           <div class="event-box">
             <%= singlepage.time %>
           </div>
 
           <!-- Ticket Type Selection -->
-          <p><strong>Ticket Type:</strong> <span id="selectedTicket">
+          <p>Ticket Type :<span id="selectedTicket">
               <% if (singlepage.tickets && singlepage.tickets.length > 0) { %>
                 <%= singlepage.tickets[0].type %> <!-- Default ticket -->
                   <% } else { %>
@@ -53,14 +67,7 @@
                     <% } %>
             </span></p>
 
-          <!-- Ticket Price -->
-          <p><strong>Price:</strong> ₹<span id="selectedPrice">
-              <% if (singlepage.tickets && singlepage.tickets.length > 0) { %>
-                <%= singlepage.tickets[0].price %> <!-- Default price -->
-                  <% } else { %>
-                    0
-                    <% } %>
-            </span></p>
+          
 
           <div class="ticket-types">
             <% if (singlepage.tickets && Array.isArray(singlepage.tickets) && singlepage.tickets.length > 0) { %>
@@ -76,7 +83,6 @@
                     <% } %>
           </div>
 
-          <!-- Buy It Now Button -->
           <button id="addToCart" class="btn-add-cart">Add to Cart</button>
         </div>
 
@@ -112,13 +118,13 @@
 
   document.getElementById("addToCart").addEventListener("click", () => {
     let id = "<%= singlepage.id %>";
-    let ticketType = document.getElementById("selectedTicket").innerText; // Get selected ticket type
-    let price = parseFloat(document.getElementById("selectedPrice").innerText); // Convert price to a number
+    let ticketType = document.getElementById("selectedTicket").innerText;
+    let price = parseFloat(document.getElementById("selectedPrice").innerText); 
 
     fetch("/product/cart", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productID: id, ticketType: ticketType, price: price }), // Send only necessary data
+      body: JSON.stringify({ productID: id, ticketType: ticketType, price: price }), 
     })
       .then((response) => response.json())
       .then(() => alert("Ticket added successfully!"))

@@ -50,7 +50,7 @@
                                 </linearGradient>
                             </defs>
                         </svg></span></h2>
-                <h1 class="event-title"><span class="bg-svg-1"><svg width="24" height="24" viewBox="0 0 21 22"
+                <h1 class="event-title-home"><span class="bg-svg-1"><svg width="24" height="24" viewBox="0 0 21 22"
                             fill="none" xmlns="http://www.w3.org/2000/svg">
                             <line x1="5.2396" y1="6.97511" x2="16.3436" y2="12.1356" stroke="#942FFA"
                                 stroke-width="2.13054" stroke-linecap="round"></line>
@@ -74,12 +74,21 @@
                             </defs>
                         </svg></span> </h1>
 
-                <div class="event-grid" id="box"></div>
+                        <div class="event-grid">
+                            <% products.forEach(product => { %>
+                                <div class="event-card" onclick="window.location.href='/product/singlepage/<%= product._id %>'">
+                                    <img src="/images/<%= product.img %>" class="event-img">
+                                    <h3 class="event-name"><%= product.title %></h3>
+                                </div>
+                            <% }) %>
+                        </div>
             </div>
         </section>
 
         <section class="home_banner">
-            <img src="/img/BANNER.png" alt="" style="width: 100%;">
+            <% offers.forEach(offer => { %>
+                    <img src="/images/<%= offer.img %>" width="100%">
+            <% }) %>
         </section>
 
         <section class="home_event_planner">
@@ -98,7 +107,7 @@
                                 </linearGradient>
                             </defs>
                         </svg></span></h2>
-                <h1 class="event-title"><span class="bg-svg-1"><svg width="24" height="24" viewBox="0 0 21 22"
+                <h1 class="event-title-home"><span class="bg-svg-1"><svg width="24" height="24" viewBox="0 0 21 22"
                             fill="none" xmlns="http://www.w3.org/2000/svg">
                             <line x1="5.2396" y1="6.97511" x2="16.3436" y2="12.1356" stroke="#942FFA"
                                 stroke-width="2.13054" stroke-linecap="round"></line>
@@ -137,7 +146,14 @@
                 </div>
             </div>
         </section>
-
+        <section>
+            <div class="home_actopass">
+                <div class="container">
+                    <img src="/img/download-actopass.png" alt="" width="100%">
+                </div>
+            </div>
+        </section>
+        
         <section class="features">
             <div class="container">
                 <h2 class="feature-title">Actopass Your Reliable Ticket Partner</h2>
@@ -209,41 +225,6 @@
         },
     });    
 </script>
-<script>
-    fetch("/product")
-        .then((response) => response.json())
-        .then((response) => display(response))
-        .catch((error) => console.log(error));
 
-    const display = (data) => {
-        console.log(data);
-        document.getElementById("box").innerHTML = "";
-        data.slice(0, 6).forEach((ele) => {
-            if (ele.item) {
-                ele = ele.item;
-            }
-
-            let card = document.createElement("div");
-            card.classList.add("event-card");
-
-            let img = document.createElement("img");
-            img.src = ele.img;
-            img.classList.add("event-img");
-
-            let title = document.createElement("h3");
-            title.innerText = ele.title;
-            title.classList.add("event-name");
-
-            card.append(img, title);
-
-            card.addEventListener("click", () => {
-                window.location.href = `/product/singlepage/${ele._id}`;
-            });
-
-            document.getElementById("box").appendChild(card);
-        });
-    };
-
-</script>
 
 </html>

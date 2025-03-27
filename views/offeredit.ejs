@@ -3,38 +3,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Banner edit</title>
+  <title>Offer Edit</title>
   <link rel="stylesheet" href="/css/adminNav.css">
 </head>
 <body>
     <%- include('adminNav') %>
 <div class="content height-100vh">
   <h1 class="text-white">Edit Banner</h1>
-  <form action="/product/updatebanner" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="_id" value="<%= banners._id %>">
+  <form action="/product/updateoffer" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="_id" value="<%= offers._id %>">
     
     <label>Existing Image:</label><br>
-    <% if (banners.img) { %>
-        <img id="bannerpreview" src="/images/<%= banners.img %>" alt="Event Image" style="width: 200px; height: auto;"><br>
+    <% if (offers.img) { %>
+        <img id="offerpreview" src="/images/<%= offers.img %>" alt="Event Image" style="width: 200px; height: auto;"><br>
     <% } else { %>
-        <img id="bannerpreview" src="" alt="No Image" style="width: 200px; height: auto; display: none;"><br>
+        <img id="offerpreview" src="" alt="No Image" style="width: 200px; height: auto; display: none;"><br>
     <% } %>
     
     <div class="as-form-group">
       <label for="img" >Upload Image</label><br>
-      <input type="file" id="bannerInput" name="img" accept="image/*">
+      <input type="file" id="offerInput" name="img" accept="image/*">
     </div>
 
     <button type="submit" class="banner-add-button">Update</button>
-    <button class="banner-cancle"><a href="/product/getbanner" class="text-white">Cancel</a></button>
+    <button class="banner-cancle"><a href="/product/getoffer" class="text-white">Cancel</a></button>
   </form>
 </div>
 
 </body>
 <script>
-   document.getElementById('bannerInput').addEventListener('change', function (event) {
+   document.getElementById('offerInput').addEventListener('change', function (event) {
         const file = event.target.files[0];
-        const preview = document.getElementById('bannerpreview');
+        const preview = document.getElementById('offerpreview');
         
         if (file) {
             const reader = new FileReader();
@@ -47,5 +47,5 @@
             preview.style.display = 'none';
         }
     });
-</script>
+  </script>
 </html>

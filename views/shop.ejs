@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>home</title>
+  <title>Shop</title>
   <link rel="stylesheet" href="/css/indx.css">
   <style>
     .content-div {
@@ -127,7 +127,7 @@
         }
 
         let img = document.createElement("img");
-        img.src = ele.img;
+        img.src = `/images/${ele.img}`;  // ✅ Ensure the correct image path
         img.classList.add("explore-img");
 
         let title = document.createElement("h2");
