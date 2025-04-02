@@ -4,9 +4,11 @@ const banner = require("../models/banner.schema")
 const planner = require("../models/planner.schema")
 const Razorpay = require("razorpay")
 const fs = require("fs");
+const Fuse = require("fuse.js");
 const user = require("../models/user.schema")
 const path = require("path");
 const offer = require("../models/offer.schema")
+const cartSchema = require("../models/cart.schema")
 
 const create = async (req, res) => {
     try {

@@ -325,17 +325,15 @@ form #category {
 }
 
 #addproduct {
-  /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
   margin-bottom: 30px;
   text-align: center;
   color: #2a2929;
 }
 
 #srch input {
-  /* margin-top: 30px; */
   border: none;
   outline: none;
-  /* border: 20px saddlebrown; */
+  width: 90%;
 }
 
 #srch i {
@@ -872,22 +870,51 @@ form #category {
 }
 
 .explore-img {
-  width: 450px;
-  height: 300px;
+  width: 100%;
   border-radius: 20px;
 }
+.explore-product{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
 
+.filter-buttons button {
+  background-color: white;
+  color: black;
+  border: 2px solid #ccc;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.filter-buttons button:hover {
+  background-color: #8e2fd1;
+  color: white;
+  border-color: #8e2fd1;
+}
 .event-main-div {
-  padding-bottom: 40px;
+  padding-bottom: 10px;
   text-align: center;
 }
 
 .explore-title {
   padding-top: 10px;
   transition: color 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
-  display: inline-block;
+  text-align: left;
+  width: fit-content;
 }
-
+.shop_page{
+  padding-bottom: 50px;
+}
 .event-main-div:hover .explore-title {
   color: #8e2fd1;
   border-bottom: 1px solid #8e2fd1;

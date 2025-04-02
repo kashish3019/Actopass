@@ -9,56 +9,19 @@
   <style>
     .content-div {
       width: 100%;
-      margin-left: 30px;
       margin-top: 30px;
     }
 
     #box h2 {
-      font-size: 20px;
+      font-size: 16px;
       font-family: sans-serif;
       font-weight: 300;
-      display: flex;
-      justify-content: center;
       align-items: center;
     }
 
     #part1 {
       font-size: 20px;
       margin-top: 60px;
-    }
-
-    /* Filter buttons styling */
-    .filter-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .filter-buttons button {
-      background-color: white;
-      color: black;
-      border: 2px solid #ccc;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-    }
-
-    .filter-buttons button:hover {
-      background-color: #8e2fd1;
-      color: white;
-      border-color: #8e2fd1;
-    }
-
-    #box {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      padding-top: 20px;
-      width: 100%;
     }
 
     .content-div h1 {
@@ -69,20 +32,12 @@
       letter-spacing: 1px;
     }
 
-    .content-div img {
-      width: 100%;
-    }
-
-    .sticky-part {
-      position: sticky;
-      top: 0;
-    }
   </style>
 </head>
 
 <body>
   <%- include('nav') %>
-    <div class="container">
+    <div class="container shop_page">
       <div class="row justify-center">
         <div id="part1">
           <div class="sticky-part">
@@ -105,7 +60,7 @@
           </div>
         </div>
         <div class="content-div row">
-          <div id="box"></div>
+          <div id="box" class="explore-product"></div>
         </div>
       </div>
     </div>
