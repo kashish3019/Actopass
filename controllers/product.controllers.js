@@ -125,7 +125,7 @@ const carts = async (req, res) => {
         return res.status(404).send("Product not found");
     }
 
-    let { ticketType, price } = req.body;
+    let { ticketType, price , time, date} = req.body;
 
     if (!ticketType || !price) {
         return res.status(400).send("Ticket type and price are required");
@@ -136,7 +136,9 @@ const carts = async (req, res) => {
         productID: req.body.productID,
         ticketType: ticketType,
         price: price,
-        qty: 1
+        qty: 1,
+        time,
+        date
     });
 
     console.log("Cart Item Added:", cartItem);

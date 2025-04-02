@@ -938,7 +938,17 @@ form #category {
   width: 100%;
   border-collapse: collapse;
 }
-
+.cart-summary{
+  text-align: right;
+}
+.cart-total-price{
+  padding-right: 30px;
+  padding-top: 15px;
+}
+.checkout-btn{
+  margin-right: 30px;
+  margin-bottom: 50px;
+}
 .cart-table th,
 .cart-table td {
   border-bottom: 1px solid #ccc;

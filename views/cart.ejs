@@ -10,119 +10,135 @@
 
 <body>
   <%- include('nav') %>
-  <div class="cart-container">
-    <h1 class="cart-title">My Cart:</h1>
-    <table class="cart-table">
-      <thead>
-        <tr>
-          <th>Image</th>
-          <th>Details</th>
-          <th>Quantity</th>
-        </tr>
-      </thead>
-      <tbody id="cart-body"></tbody>
-    </table>
-    <button id="totalPriceBtn" class="total-price-btn">Total Price: ₹ 0</button>
-  </div>
-  <%- include('footer') %>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script>
+    <div class="cart-container">
+      <h1 class="cart-title">My Cart:</h1>
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Details</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody id="cart-body"></tbody>
+      </table>
+      <div class="cart-summary">
+        <h3 class="cart-total-price">Total Price: <span id="totalPrice">₹ 0</span></h3>
+        <button id="checkoutBtn" class="checkout-btn">Checkout Now</button>
+      </div>
+    </div>
+    <%- include('footer') %>
+      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+      <script>
 
-    const updateQty = (id, change) => {
-      fetch(`/product/cart/update/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ qty: change })
-      })
-        .then((res) => res.json())
-        .then((response) => {
-          if (response.success) {
-            get();
-          } else {
-            console.error("Failed to update quantity");
+        const updateQty = (id, change) => {
+          fetch(`/product/cart/update/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ qty: change })
+          })
+            .then((res) => res.json())
+            .then((response) => {
+              if (response.success) {
+                get();
+              } else {
+                console.error("Failed to update quantity");
+              }
+            })
+            .catch((err) => console.log(err));
+        };
+
+        const handlePayment = async () => {
+          let totalAmount = parseInt(document.getElementById("totalPrice").innerText.replace("₹ ", ""));
+          if (totalAmount <= 0) {
+            alert("Cart is empty. Please add some items.");
+            return;
           }
-        })
-        .catch((err) => console.log(err));
-    };
 
-    const handlePayment = async (amount) => {
-      let res = await fetch("/product/payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: amount })
-      });
-      let order = await res.json();
-      console.log(order);
-      let options = { key: "rzp_test_7Grqtls4UrZJlU", amount: order.amount };
-      let razorpay = new Razorpay(options);
-      razorpay.open();
-    };
+          let res = await fetch("/product/payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount: totalAmount })
+          });
 
-    const display = (data) => {
-    let totalprice = 0;
-    const cartBody = document.getElementById("cart-body");
-    cartBody.innerHTML = ""; 
+          let order = await res.json();
+          let options = { key: "rzp_test_7Grqtls4UrZJlU", amount: order.amount };
+          let razorpay = new Razorpay(options);
+          razorpay.open();
+        };
+        document.getElementById("checkoutBtn").addEventListener("click", handlePayment);
 
-    data.forEach((element) => {
-        let product = element.productID;
-        if (!product) return; // Skip if product is not found
+        const display = (data) => {
+          let totalprice = 0;
+          const cartBody = document.getElementById("cart-body");
+          cartBody.innerHTML = "";
 
-        let ticketPrice = element.price;
-        let ticketType = element.ticketType;
-        totalprice += ticketPrice * element.qty;
+          data.forEach((element) => {
+            let product = element.productID;
+            if (!product) return;
 
-        let row = document.createElement("tr");
+            let ticketPrice = element.price;
+            let ticketType = element.ticketType;
+            let date = element.date ? new Date(element.date).toLocaleDateString() : "Not Available";
+            let time = element.time || "Not Available";
+            totalprice += ticketPrice * element.qty;
 
-        let imgTd = document.createElement("td");
-        let img = document.createElement("img");
-        img.src = product.img ? `/images/${product.img}` : "/images/default.png"; // Handle missing image
-        img.classList.add("cart-img");
-        imgTd.appendChild(img);
+            let row = document.createElement("tr");
 
-        let detailsTd = document.createElement("td");
-        detailsTd.innerHTML = `
+            let imgTd = document.createElement("td");
+            let img = document.createElement("img");
+            img.src = product.img ? `/images/${product.img}` : "/images/default.png";
+            img.classList.add("cart-img");
+            imgTd.appendChild(img);
+
+            let detailsTd = document.createElement("td");
+            detailsTd.innerHTML = `
           <div class="cart-item-title">${product.title || "No Title"}</div>
           <div class="cart-item-info"><strong>Ticket Type:</strong> ${ticketType}</div>
-          <div class="cart-item-info"><strong>Price:</strong> ₹${ticketPrice}</div>
+          <div class="cart-item-info"><strong>Event Date:</strong> ${date}</div>
+          <div class="cart-item-info"><strong>Event Time:</strong> ${time}</div>
         `;
 
-        let qtyTd = document.createElement("td");
-        let btnDecrease = document.createElement("button");
-        btnDecrease.innerHTML = "-";
-        btnDecrease.classList.add("cart-btn");
-        btnDecrease.addEventListener("click", () => updateQty(element._id, -1));
+            let priceTd = document.createElement("td");
+            priceTd.innerHTML = `₹${ticketPrice}`;
+            priceTd.classList.add("cart-price");
 
-        let qtyDisplay = document.createElement("span");
-        qtyDisplay.innerHTML = `${element.qty}`;
-        qtyDisplay.classList.add("cart-qty");
+            let qtyTd = document.createElement("td");
+            let btnDecrease = document.createElement("button");
+            btnDecrease.innerHTML = "-";
+            btnDecrease.classList.add("cart-btn");
+            btnDecrease.addEventListener("click", () => updateQty(element._id, -1));
 
-        let btnIncrease = document.createElement("button");
-        btnIncrease.innerHTML = "+";
-        btnIncrease.classList.add("cart-btn");
-        btnIncrease.addEventListener("click", () => updateQty(element._id, 1));
+            let qtyDisplay = document.createElement("span");
+            qtyDisplay.innerHTML = `${element.qty}`;
+            qtyDisplay.classList.add("cart-qty");
 
-        qtyTd.append(btnDecrease, qtyDisplay, btnIncrease);
+            let btnIncrease = document.createElement("button");
+            btnIncrease.innerHTML = "+";
+            btnIncrease.classList.add("cart-btn");
+            btnIncrease.addEventListener("click", () => updateQty(element._id, 1));
 
-        row.append(imgTd, detailsTd, qtyTd);
-        cartBody.appendChild(row);
-    });
+            qtyTd.append(btnDecrease, qtyDisplay, btnIncrease);
 
-    let totalPriceBtn = document.getElementById("totalPriceBtn");
-    totalPriceBtn.innerHTML = `Total Price: ₹ ${totalprice}`;
-    totalPriceBtn.addEventListener("click", () => handlePayment(totalprice));
-};
+            row.append(imgTd, detailsTd, qtyTd, priceTd);
+            cartBody.appendChild(row);
+          });
+
+          document.getElementById("totalPrice").innerText = `₹ ${totalprice}`;
+        };
 
 
-    const get = async () => {
-      fetch("/product/cartfind")
-        .then((response) => response.json())
-        .then((response) => {
-          display(response);
-        })
-        .catch((error) => console.log(error));
-    };
-    get();
-  </script>
+        const get = async () => {
+          fetch("/product/cartfind")
+            .then((response) => response.json())
+            .then((response) => {
+              display(response);
+            })
+            .catch((error) => console.log(error));
+        };
+        get();
+      </script>
 </body>
 
 </html>

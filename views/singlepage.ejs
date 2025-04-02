@@ -119,12 +119,14 @@
   document.getElementById("addToCart").addEventListener("click", () => {
     let id = "<%= singlepage.id %>";
     let ticketType = document.getElementById("selectedTicket").innerText;
-    let price = parseFloat(document.getElementById("selectedPrice").innerText); 
+    let price = parseFloat(document.getElementById("selectedPrice").innerText);
+    let date = "<%= singlepage.date %>";
+    let time = "<%= singlepage.time %>"; 
 
     fetch("/product/cart", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productID: id, ticketType: ticketType, price: price }), 
+      body: JSON.stringify({ productID: id, ticketType: ticketType, price: price, date: date, time: time }), 
     })
       .then((response) => response.json())
       .then(() => alert("Ticket added successfully!"))
